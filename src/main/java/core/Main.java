@@ -2,14 +2,14 @@ package core;
 
 import core.lib.Injector;
 import core.model.Manufacturer;
-import core.service.ManufacturerServiceIntf;
+import core.service.ManufacturerService;
 
 public class Main {
     private static final Injector injector = Injector.getInstance(Main.class.getPackageName());
     
     public static void main(String[] args) {
-        ManufacturerServiceIntf manufacturerService
-                = (ManufacturerServiceIntf) injector.getInstance(ManufacturerServiceIntf.class);
+        ManufacturerService manufacturerService
+                = (ManufacturerService) injector.getInstance(ManufacturerService.class);
     
         Manufacturer first = new Manufacturer("AMW", "Ukraine");
         Manufacturer second = new Manufacturer("BMW", "Ukraine");
