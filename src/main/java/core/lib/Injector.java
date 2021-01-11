@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 
 public class Injector {
+    private static final String SPACE_REPLACE = "%20";
+    private static final String SPACE = " ";
     private static final Map<String, Injector> injectors = new HashMap<>();
     private final Map<Class<?>, Object> instanceOfClasses = new HashMap<>();
     private final List<Class<?>> classes = new ArrayList<>();
@@ -77,7 +79,7 @@ public class Injector {
         List<File> dirs = new ArrayList<>();
         while (resources.hasMoreElements()) {
             URL resource = resources.nextElement();
-            dirs.add(new File(resource.getFile()));
+            dirs.add(new File(resource.getFile().replaceAll(SPACE_REPLACE, SPACE)));
         }
         ArrayList<Class<?>> classes = new ArrayList<>();
         for (File directory : dirs) {
