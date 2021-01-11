@@ -10,7 +10,7 @@ public class Main {
     public static void main(String[] args) {
         ManufacturerServiceIntf manufacturerService
                 = (ManufacturerServiceIntf) injector.getInstance(ManufacturerServiceIntf.class);
-        
+    
         Manufacturer first = new Manufacturer("AMW", "Ukraine");
         Manufacturer second = new Manufacturer("BMW", "Ukraine");
         Manufacturer third = new Manufacturer("CMW", "Germany");
