@@ -19,7 +19,7 @@ public class ManufacturerServiceImpl implements ManufacturerService {
     
     @Override
     public Manufacturer get(Long id) {
-        return dao.get(id).get();
+        return dao.get(id).orElseThrow();
     }
     
     @Override

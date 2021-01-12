@@ -1,12 +1,10 @@
 package core.service.driver;
 
-import core.lib.Service;
 import core.model.Driver;
 import java.util.List;
 
-@Service
 public interface DriverService {
-    Driver create(Driver driver);
+    Driver add(Driver driver);
     
     Driver get(Long id);
     
