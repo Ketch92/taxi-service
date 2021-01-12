@@ -4,16 +4,5 @@ import core.model.Manufacturer;
 import java.util.List;
 import java.util.Optional;
 
-public interface ManufacturerDao {
-    Manufacturer add(Manufacturer manufacturer);
-    
-    Optional<Manufacturer> get(Long id);
-    
-    List<Manufacturer> getAll();
-    
-    Manufacturer update(Manufacturer manufacturer);
-
-    boolean delete(Long id);
-    
-    boolean delete(Manufacturer manufacturer);
+public interface ManufacturerDao extends Dao<Manufacturer> {
 }
