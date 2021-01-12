@@ -13,12 +13,10 @@ public class Car {
     public Car(String model, Manufacturer manufacturer) {
         this.model = model;
         this.manufacturer = manufacturer;
+        this.driverList = new ArrayList<>();
     }
     
     public void addDriver(Driver driver) {
-        if (driverList == null) {
-            driverList = new ArrayList<>();
-        }
         driverList.add(driver);
     }
     

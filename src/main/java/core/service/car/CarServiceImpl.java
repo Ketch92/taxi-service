@@ -44,6 +44,7 @@ public class CarServiceImpl implements CarService {
     
     @Override
     public void addDriverToCar(Driver driver, Car car) {
+        driverDao.add(driver);
         car.addDriver(driver);
         carDao.update(car);
     }
@@ -59,8 +60,8 @@ public class CarServiceImpl implements CarService {
         return carDao.getAll().stream()
                 .filter(c -> c.getDriverList()
                                      .stream()
-                                     .filter(d -> d.getLicenceNumber()
-                                             .equals(String.valueOf(driverId)))
+                                     .filter(d -> d.getId()
+                                             .equals(driverId))
                                      .findFirst()
                                      .orElse(null) != null)
                 .collect(Collectors.toList());

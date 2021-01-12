@@ -1,11 +1,15 @@
 package core;
 
 import core.lib.Injector;
+import core.model.Car;
 import core.model.Driver;
 import core.model.Manufacturer;
 import core.service.car.CarService;
 import core.service.driver.DriverService;
 import core.service.manufacturer.ManufacturerService;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class Main {
     private static final Injector injector = Injector.getInstance(Main.class.getPackageName());
@@ -17,8 +21,8 @@ public class Main {
         DriverService driverService = (DriverService) injector.getInstance(DriverService.class);
 
         testManufacturerSrvc(manufacturerService);
-        testCarSrvc(carService);
         testDriverSrvc(driverService);
+        testCarSrvc(carService, manufacturerService.getAll(), driverService.getAll());
     }
     
     private static void testManufacturerSrvc(ManufacturerService manufacturerService) {
@@ -52,8 +56,50 @@ public class Main {
         manufacturerService.getAll().forEach(System.out::println);
     }
     
-    private static void testCarSrvc(CarService carService) {
+    private static void testCarSrvc(CarService carService,
+                                    List<Manufacturer> manufacturers,
+                                    List<Driver> drivers) {
+        List<Car> cars = new ArrayList<>();
+        for (Manufacturer manufacturer : manufacturers) {
+            cars.add(new Car("BMV" + new Random().nextInt(250), manufacturer));
+            cars.add(new Car("BMV" + new Random().nextInt(100), manufacturer));
+        }
+        
+        cars.get(cars.size() - 1).setDriverList(drivers);
+        
+        for(Car car : cars) {
+            carService.add(car);
+        }
     
+        System.out.println("\nPrint all cars from storage");
+        carService.getAll().forEach(System.out::println);
+    
+        System.out.println("\nPrint car by index");
+        System.out.println(cars.get(cars.size() - 1).toString());
+        
+        Car update = new Car("Some", new Manufacturer("Empty", "Poland"));
+        update.setId(0L);
+        Car old = carService.update(update);
+        System.out.println("\nUpdate the 0 index car");
+        System.out.println("Was " + old.toString());
+        System.out.println("Now " + carService.get(0L).toString());
+    
+        System.out.println("\nremove car at with id = 1");
+        carService.delete(1L);
+        carService.getAll().forEach(System.out::println);
+    
+        System.out.println("\nNow we add driver to car with id 0");
+        carService.addDriverToCar(new Driver("Oleh", "fhdajkh"), carService.get(0L));
+        carService.getAll().forEach(System.out::println);
+    
+        System.out.println("\nRemove driver from car");
+        System.out.println(carService.get((long) (cars.size() - 1)).toString() + " - car");
+        System.out.println(drivers.get(0) + " - driver");
+        carService.removeDriverFromCar(drivers.get(0), carService.get((long) (cars.size() - 1)));
+        carService.getAll().forEach(System.out::println);
+    
+        System.out.println("\nGet cars by driver");
+        carService.getAllByDriver(1L).forEach(System.out::println);
     }
     
     private static void testDriverSrvc(DriverService driverService) {
