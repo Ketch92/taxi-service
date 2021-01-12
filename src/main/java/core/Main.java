@@ -67,7 +67,7 @@ public class Main {
         
         cars.get(cars.size() - 1).setDriverList(drivers);
         
-        for(Car car : cars) {
+        for (Car car : cars) {
             carService.add(car);
         }
     
