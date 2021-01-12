@@ -1,11 +1,13 @@
 package core.dao.car;
 
+import core.lib.Dao;
 import core.model.Car;
 import core.storage.Storage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Dao
 public class CarDaoImpl implements CarDao {
     @Override
     public Car add(Car car) {

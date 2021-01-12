@@ -2,7 +2,7 @@ package core;
 
 import core.lib.Injector;
 import core.model.Manufacturer;
-import core.service.ManufacturerService;
+import core.service.manufacturer.ManufacturerService;
 
 public class Main {
     private static final Injector injector = Injector.getInstance(Main.class.getPackageName());

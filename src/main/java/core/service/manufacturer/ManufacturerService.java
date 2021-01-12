@@ -1,4 +1,4 @@
-package core.service;
+package core.service.manufacturer;
 
 import core.model.Manufacturer;
 import java.util.List;

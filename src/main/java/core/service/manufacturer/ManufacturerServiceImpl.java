@@ -1,4 +1,4 @@
-package core.service;
+package core.service.manufacturer;
 
 import core.dao.manufacturer.ManufacturerDao;
 import core.lib.Inject;
