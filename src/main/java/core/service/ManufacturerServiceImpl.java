@@ -28,17 +28,17 @@ public class ManufacturerServiceImpl implements ManufacturerService {
     }
     
     @Override
-    public Manufacturer update(Long id, Manufacturer manufacturer) {
-        return dao.update(id, manufacturer);
+    public Manufacturer update(Manufacturer manufacturer) {
+        return dao.update(manufacturer);
     }
     
     @Override
-    public Manufacturer delete(Long id) {
+    public boolean delete(Long id) {
         return dao.delete(id);
     }
     
     @Override
-    public Manufacturer delete(Manufacturer manufacturer) {
+    public boolean delete(Manufacturer manufacturer) {
         return dao.delete(manufacturer);
     }
 }

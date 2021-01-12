@@ -27,8 +27,10 @@ public class Main {
     
         System.out.println(manufacturerService.get(3L).toString());
         System.out.println("it was the data of 3rd manufacturer");
-    
-        Manufacturer old = manufacturerService.update(0L, new Manufacturer("FGT", "Volyn"));
+        
+        Manufacturer updated = new Manufacturer("FGT", "Volyn");
+        updated.setId(0L);
+        Manufacturer old = manufacturerService.update(updated);
         System.out.println("the manufacturer and 0 was updated, the old one " + old.toString());
         manufacturerService.getAll().forEach(System.out::println);
         
