@@ -1,7 +1,10 @@
 package core;
 
 import core.lib.Injector;
+import core.model.Driver;
 import core.model.Manufacturer;
+import core.service.car.CarService;
+import core.service.driver.DriverService;
 import core.service.manufacturer.ManufacturerService;
 
 public class Main {
@@ -10,7 +13,15 @@ public class Main {
     public static void main(String[] args) {
         ManufacturerService manufacturerService
                 = (ManufacturerService) injector.getInstance(ManufacturerService.class);
+        CarService carService = (CarService) injector.getInstance(CarService.class);
+        DriverService driverService = (DriverService) injector.getInstance(DriverService.class);
+
+        testManufacturerSrvc(manufacturerService);
+        testCarSrvc(carService);
+        testDriverSrvc(driverService);
+    }
     
+    private static void testManufacturerSrvc(ManufacturerService manufacturerService) {
         Manufacturer first = new Manufacturer("AMW", "Ukraine");
         Manufacturer second = new Manufacturer("BMW", "Ukraine");
         Manufacturer third = new Manufacturer("CMW", "Germany");
@@ -21,10 +32,10 @@ public class Main {
         manufacturerService.add(third);
         manufacturerService.add(nextAfterThird);
         System.out.println("4 manufacturers were added\n");
-    
+        
         manufacturerService.getAll().forEach(System.out::println);
         System.out.println("printed all manufacturers\n");
-    
+        
         System.out.println(manufacturerService.get(3L).toString());
         System.out.println("it was the data of 3rd manufacturer");
         
@@ -36,8 +47,45 @@ public class Main {
         
         manufacturerService.delete(2L);
         manufacturerService.delete(3L);
-    
+        
         System.out.println("Two manufacturers were removed");
         manufacturerService.getAll().forEach(System.out::println);
+    }
+    
+    private static void testCarSrvc(CarService carService) {
+    
+    }
+    
+    private static void testDriverSrvc(DriverService driverService) {
+        Driver bob = new Driver("Bob", "BobTheBest0001");
+        Driver alice = new Driver("Alice", "AliceIsC00l");
+        Driver john = new Driver("John", "JohnCosplayBohdan");
+        Driver ironMan = new Driver("I'm Iron Man", "I love you 3000");
+        Driver theHeroWhoDiesFirst = new Driver("Not important", "666");
+        Driver actorWhoHasLeft = new Driver("Bob Johnson", "4134867");
+    
+        Driver[] drivers = new Driver[]{bob, alice, john, ironMan,
+                theHeroWhoDiesFirst, actorWhoHasLeft};
+    
+        for (int i = 0; i < drivers.length; i++) {
+            driverService.add(drivers[i]);
+        }
+    
+        System.out.println("Print all added drivers");
+        driverService.getAll().forEach(System.out::println);
+    
+        System.out.println("\nGet by id");
+        System.out.println(driverService.get(theHeroWhoDiesFirst.getId()).toString());
+    
+        Driver actorChangedJonson = new Driver("John Bobson", "4154454");
+        System.out.println("\nwe update " + actorWhoHasLeft.toString() + " by ");
+        actorChangedJonson.setId(actorWhoHasLeft.getId());
+        driverService.update(actorChangedJonson);
+        System.out.println(driverService.get(actorWhoHasLeft.getId()).toString());
+    
+        System.out.println("\nNow we kill secondary hero");
+        driverService.delete(theHeroWhoDiesFirst.getId());
+        driverService.getAll().forEach(System.out::println);
+        System.out.println("as we can see " + theHeroWhoDiesFirst.toString() + "isn't in the list");
     }
 }

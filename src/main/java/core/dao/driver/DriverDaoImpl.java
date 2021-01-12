@@ -13,7 +13,7 @@ public class DriverDaoImpl implements DriverDao {
     public Driver add(Driver driver) {
         Storage.add(driver);
         return driver;
-}
+    }
     
     @Override
     public Optional<Driver> get(Long id) {
