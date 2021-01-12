@@ -1,6 +1,6 @@
 package core.service;
 
-import core.dao.ManufacturerDao;
+import core.dao.manufacturer.ManufacturerDao;
 import core.lib.Inject;
 import core.lib.Service;
 import core.model.Manufacturer;
