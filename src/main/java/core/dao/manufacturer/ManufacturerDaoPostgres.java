@@ -17,7 +17,7 @@ import java.util.Optional;
 public class ManufacturerDaoPostgres implements ManufacturerDao {
     @Override
     public Manufacturer add(Manufacturer manufacturer) {
-        String insert = "INSERT INTO manufacturers(name,country)"
+        String insert = "INSERT INTO manufacturers(name, country)"
                         + " VALUES(?, ?);";
         
         try (Connection con = ConnectionUtils.getConnection()) {
@@ -51,11 +51,12 @@ public class ManufacturerDaoPostgres implements ManufacturerDao {
             PreparedStatement getById = con.prepareStatement(select);
             getById.setLong(1, id);
             ResultSet resultSet = getById.executeQuery();
+            getById.close();
+            
             List<Manufacturer> fromResultSet = getFromResultSet(resultSet);
             if (fromResultSet.size() == 1) {
                 return Optional.ofNullable(fromResultSet.get(0));
             }
-            resultSet.close();
             return Optional.empty();
         } catch (SQLException e) {
             throw new DataProcessingException("Fail to get manufacturer by id " + id, e);
@@ -70,10 +71,9 @@ public class ManufacturerDaoPostgres implements ManufacturerDao {
         try (Connection con = ConnectionUtils.getConnection()) {
             PreparedStatement getAll = con.prepareStatement(select);
             ResultSet resultSet = getAll.executeQuery();
-            List<Manufacturer> all = getFromResultSet(resultSet);
             getAll.close();
-            resultSet.close();
-            return all;
+    
+            return getFromResultSet(resultSet);
         } catch (SQLException e) {
             throw new DataProcessingException("Failed to get all manufacturers from database", e);
         }
@@ -89,6 +89,7 @@ public class ManufacturerDaoPostgres implements ManufacturerDao {
             updateStatement.setString(2, manufacturer.getCountry());
             updateStatement.setLong(3, manufacturer.getId());
             updateStatement.executeUpdate();
+            updateStatement.close();
         } catch (SQLException exception) {
             throw new DataProcessingException(
                     String.format("Failed to update the %s",
@@ -107,6 +108,7 @@ public class ManufacturerDaoPostgres implements ManufacturerDao {
             PreparedStatement deleteStatement = con.prepareStatement(delete);
             deleteStatement.setLong(1, id);
             updated = deleteStatement.executeUpdate();
+            deleteStatement.close();
         } catch (SQLException e) {
             throw new DataProcessingException("Failed to delete the manufacturer at id = " + id, e);
         }
@@ -129,6 +131,7 @@ public class ManufacturerDaoPostgres implements ManufacturerDao {
                 manufacturer.setId(id);
                 list.add(manufacturer);
             }
+            resultSet.close();
         } catch (SQLException e) {
             throw new DataProcessingException("Couldn't get values from resultSet", e);
         }
