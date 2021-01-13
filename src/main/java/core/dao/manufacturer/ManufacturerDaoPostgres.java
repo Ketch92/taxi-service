@@ -18,8 +18,7 @@ public class ManufacturerDaoPostgres implements ManufacturerDao {
     @Override
     public Manufacturer add(Manufacturer manufacturer) {
         String insert = "INSERT INTO manufacturers(name,country)"
-                        + " VALUES(?, ?)"
-                        + " WHERE deleted = false;";
+                        + " VALUES(?, ?);";
         
         try (Connection con = ConnectionUtils.getConnection()) {
             PreparedStatement insertStatement = con.prepareStatement(insert,
@@ -102,7 +101,16 @@ public class ManufacturerDaoPostgres implements ManufacturerDao {
     
     @Override
     public boolean delete(Long id) {
-        return false;
+        String delete = "UPDATE manufacturers SET deleted = true WHERE id = ?";
+        int updated;
+        try (Connection con = ConnectionUtils.getConnection()) {
+            PreparedStatement deleteStatement = con.prepareStatement(delete);
+            deleteStatement.setLong(1, id);
+            updated = deleteStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DataProcessingException("Failed to delete the manufacturer at id = " + id, e);
+        }
+        return updated > 0;
     }
     
     @Override
