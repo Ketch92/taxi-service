@@ -27,9 +27,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
-        Manufacturer oldValue = Storage.manufacturers.get(manufacturer.getId());
         Storage.manufacturers.put(manufacturer.getId(), manufacturer);
-        return oldValue;
+        return manufacturer;
     }
     
     @Override
