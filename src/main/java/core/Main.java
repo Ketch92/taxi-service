@@ -17,12 +17,18 @@ public class Main {
     public static void main(String[] args) {
         ManufacturerService manufacturerService
                 = (ManufacturerService) injector.getInstance(ManufacturerService.class);
-        CarService carService = (CarService) injector.getInstance(CarService.class);
-        DriverService driverService = (DriverService) injector.getInstance(DriverService.class);
+        
+        Manufacturer mf = new Manufacturer("Some", "Any");
+//        System.out.println(manufacturerService.add(mf).toString());
+        System.out.println(manufacturerService.get(1L).toString());
+        System.out.println(manufacturerService.getAll());
 
-        testManufacturerService(manufacturerService);
-        testDriverService(driverService);
-        testCarService(carService, manufacturerService.getAll(), driverService.getAll());
+//        CarService carService = (CarService) injector.getInstance(CarService.class);
+//        DriverService driverService = (DriverService) injector.getInstance(DriverService.class);
+
+//        testManufacturerService(manufacturerService);
+//        testDriverService(driverService);
+//        testCarService(carService, manufacturerService.getAll(), driverService.getAll());
     }
     
     private static void testManufacturerService(ManufacturerService manufacturerService) {
