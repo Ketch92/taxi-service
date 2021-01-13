@@ -55,7 +55,8 @@ public class ManufacturerDaoJdbc implements ManufacturerDao {
             }
             return Optional.empty();
         } catch (SQLException e) {
-            throw new DataProcessingException("Failed to get manufacturer by id " + id, e);
+            throw new DataProcessingException(String
+                    .format("Failed to get manufacturer by id = %d", id), e);
         }
     }
     
