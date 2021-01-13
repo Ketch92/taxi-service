@@ -7,25 +7,25 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Storage {
-    public static final Map<Long, Manufacturer> manufacturerStorage = new HashMap<>();
-    public static final Map<Long, Car> carStorage = new HashMap<>();
-    public static final Map<Long, Driver> driverStorage = new HashMap<>();
+    public static final Map<Long, Manufacturer> manufacturers = new HashMap<>();
+    public static final Map<Long, Car> cars = new HashMap<>();
+    public static final Map<Long, Driver> drivers = new HashMap<>();
     private static long manufacturerID;
     private static long carID;
     private static long driverID;
     
     public static void add(Manufacturer manufacturer) {
         manufacturer.setId(manufacturerID);
-        manufacturerStorage.put(manufacturerID++, manufacturer);
+        manufacturers.put(manufacturerID++, manufacturer);
     }
     
     public static void add(Car car) {
         car.setId(carID);
-        carStorage.put(carID++, car);
+        cars.put(carID++, car);
     }
     
     public static void add(Driver driver) {
         driver.setId(driverID);
-        driverStorage.put(driverID++, driver);
+        drivers.put(driverID++, driver);
     }
 }

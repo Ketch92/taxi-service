@@ -17,25 +17,25 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     
     @Override
     public Optional<Manufacturer> get(Long id) {
-        return Optional.ofNullable(Storage.manufacturerStorage.get(id));
+        return Optional.ofNullable(Storage.manufacturers.get(id));
     }
     
     @Override
     public List<Manufacturer> getAll() {
-        return new ArrayList<>(Storage.manufacturerStorage.values());
+        return new ArrayList<>(Storage.manufacturers.values());
     }
     
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
-        Manufacturer oldValue = Storage.manufacturerStorage.get(manufacturer.getId());
-        Storage.manufacturerStorage.put(manufacturer.getId(), manufacturer);
+        Manufacturer oldValue = Storage.manufacturers.get(manufacturer.getId());
+        Storage.manufacturers.put(manufacturer.getId(), manufacturer);
         return oldValue;
     }
     
     @Override
     public boolean delete(Long id) {
-        if (Storage.manufacturerStorage.containsKey(id)) {
-            Storage.manufacturerStorage.remove(id);
+        if (Storage.manufacturers.containsKey(id)) {
+            Storage.manufacturers.remove(id);
             return true;
         }
         return false;

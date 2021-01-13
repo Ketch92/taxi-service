@@ -20,12 +20,12 @@ public class Main {
         CarService carService = (CarService) injector.getInstance(CarService.class);
         DriverService driverService = (DriverService) injector.getInstance(DriverService.class);
 
-        testManufacturerSrvc(manufacturerService);
-        testDriverSrvc(driverService);
-        testCarSrvc(carService, manufacturerService.getAll(), driverService.getAll());
+        testManufacturerService(manufacturerService);
+        testDriverService(driverService);
+        testCarService(carService, manufacturerService.getAll(), driverService.getAll());
     }
     
-    private static void testManufacturerSrvc(ManufacturerService manufacturerService) {
+    private static void testManufacturerService(ManufacturerService manufacturerService) {
         Manufacturer first = new Manufacturer("AMW", "Ukraine");
         Manufacturer second = new Manufacturer("BMW", "Ukraine");
         Manufacturer third = new Manufacturer("CMW", "Germany");
@@ -56,9 +56,9 @@ public class Main {
         manufacturerService.getAll().forEach(System.out::println);
     }
     
-    private static void testCarSrvc(CarService carService,
-                                    List<Manufacturer> manufacturers,
-                                    List<Driver> drivers) {
+    private static void testCarService(CarService carService,
+                                       List<Manufacturer> manufacturers,
+                                       List<Driver> drivers) {
         List<Car> cars = new ArrayList<>();
         for (Manufacturer manufacturer : manufacturers) {
             cars.add(new Car("BMV" + new Random().nextInt(250), manufacturer));
@@ -102,7 +102,7 @@ public class Main {
         carService.getAllByDriver(1L).forEach(System.out::println);
     }
     
-    private static void testDriverSrvc(DriverService driverService) {
+    private static void testDriverService(DriverService driverService) {
         Driver bob = new Driver("Bob", "BobTheBest0001");
         Driver alice = new Driver("Alice", "AliceIsC00l");
         Driver john = new Driver("John", "JohnCosplayBohdan");

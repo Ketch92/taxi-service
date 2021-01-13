@@ -17,25 +17,25 @@ public class DriverDaoImpl implements DriverDao {
     
     @Override
     public Optional<Driver> get(Long id) {
-        return Optional.ofNullable(Storage.driverStorage.get(id));
+        return Optional.ofNullable(Storage.drivers.get(id));
     }
     
     @Override
     public List<Driver> getAll() {
-        return new ArrayList<>(Storage.driverStorage.values());
+        return new ArrayList<>(Storage.drivers.values());
     }
     
     @Override
     public Driver update(Driver driver) {
-        Driver oldDriver = Storage.driverStorage.get(driver.getId());
-        Storage.driverStorage.put(driver.getId(), driver);
+        Driver oldDriver = Storage.drivers.get(driver.getId());
+        Storage.drivers.put(driver.getId(), driver);
         return oldDriver;
     }
     
     @Override
     public boolean delete(Long id) {
-        if (Storage.driverStorage.containsKey(id)) {
-            Storage.driverStorage.remove(id);
+        if (Storage.drivers.containsKey(id)) {
+            Storage.drivers.remove(id);
             return true;
         }
         return false;
