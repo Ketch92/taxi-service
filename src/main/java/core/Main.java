@@ -19,9 +19,13 @@ public class Main {
                 = (ManufacturerService) injector.getInstance(ManufacturerService.class);
         
         Manufacturer mf = new Manufacturer("Some", "Any");
+        Manufacturer update = new Manufacturer("Same", "All");
+        update.setId(1L);
+        
 //        System.out.println(manufacturerService.add(mf).toString());
         System.out.println(manufacturerService.get(1L).toString());
         System.out.println(manufacturerService.getAll());
+        System.out.println(manufacturerService.update(update).toString());
 
 //        CarService carService = (CarService) injector.getInstance(CarService.class);
 //        DriverService driverService = (DriverService) injector.getInstance(DriverService.class);

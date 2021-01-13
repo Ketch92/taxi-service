@@ -19,7 +19,7 @@ public class ManufacturerDaoPostgres implements ManufacturerDao {
     public Manufacturer add(Manufacturer manufacturer) {
         String insert = "INSERT INTO manufacturers(name,country)"
                         + " VALUES(?, ?)"
-                        + " WHERE delete = false;";
+                        + " WHERE deleted = false;";
         
         try (Connection con = ConnectionUtils.getConnection()) {
             PreparedStatement insertStatement = con.prepareStatement(insert,
@@ -47,7 +47,7 @@ public class ManufacturerDaoPostgres implements ManufacturerDao {
     public Optional<Manufacturer> get(Long id) {
         String select = "SELECT id, name, country"
                         + " FROM manufacturers"
-                        + " WHERE id = ? AND delete = false;";
+                        + " WHERE (id = ? AND deleted = false);";
         try (Connection con = ConnectionUtils.getConnection()) {
             PreparedStatement getById = con.prepareStatement(select);
             getById.setLong(1, id);
@@ -67,7 +67,7 @@ public class ManufacturerDaoPostgres implements ManufacturerDao {
     public List<Manufacturer> getAll() {
         String select = "SELECT id, name, country"
                         + " FROM manufacturers"
-                        + " WHERE delete == false;";
+                        + " WHERE deleted = false;";
         try (Connection con = ConnectionUtils.getConnection()) {
             PreparedStatement getAll = con.prepareStatement(select);
             ResultSet resultSet = getAll.executeQuery();
@@ -82,7 +82,22 @@ public class ManufacturerDaoPostgres implements ManufacturerDao {
     
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
-        return null;
+        String update = "UPDATE manufacturers SET name = ?,"
+                        + " country = ? WHERE id = ? AND deleted = false";
+        try (Connection con = ConnectionUtils.getConnection()) {
+            PreparedStatement updateStatement = con.prepareStatement(update);
+            updateStatement.setString(1, manufacturer.getName());
+            updateStatement.setString(2, manufacturer.getCountry());
+            updateStatement.setLong(3, manufacturer.getId());
+            updateStatement.executeUpdate();
+        } catch (SQLException exception) {
+            throw new DataProcessingException(
+                    String.format("Failed to update the %s",
+                            manufacturer.toString()
+                    ),
+                    exception);
+        }
+        return manufacturer;
     }
     
     @Override
