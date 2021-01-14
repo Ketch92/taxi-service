@@ -46,7 +46,7 @@ public class ManufacturerDaoJdbc implements ManufacturerDao {
             getByIdStatement.setLong(1, id);
             ResultSet resultSet = getByIdStatement.executeQuery();
             if (resultSet.next()) {
-                return Optional.of(getManufacturerFromResultSet(resultSet));
+                return Optional.of(parseResultSet(resultSet));
             }
             return Optional.empty();
         } catch (SQLException e) {
@@ -65,7 +65,7 @@ public class ManufacturerDaoJdbc implements ManufacturerDao {
                 PreparedStatement getAllStatement = con.prepareStatement(select)) {
             ResultSet resultSet = getAllStatement.executeQuery();
             while (resultSet.next()) {
-                resultList.add(getManufacturerFromResultSet(resultSet));
+                resultList.add(parseResultSet(resultSet));
             }
             return resultList;
         } catch (SQLException e) {
@@ -110,7 +110,7 @@ public class ManufacturerDaoJdbc implements ManufacturerDao {
         return delete(manufacturer.getId());
     }
     
-    private Manufacturer getManufacturerFromResultSet(ResultSet resultSet) throws SQLException {
+    private Manufacturer parseResultSet(ResultSet resultSet) throws SQLException {
         Long id = resultSet.getObject("id", Long.class);
         String name = resultSet.getObject("name", String.class);
         String country = resultSet.getObject("country", String.class);

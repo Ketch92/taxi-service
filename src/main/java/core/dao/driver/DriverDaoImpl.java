@@ -1,13 +1,11 @@
 package core.dao.driver;
 
-import core.lib.Dao;
 import core.model.Driver;
 import core.storage.Storage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Dao
 public class DriverDaoImpl implements DriverDao {
     @Override
     public Driver add(Driver driver) {

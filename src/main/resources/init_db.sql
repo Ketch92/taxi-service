@@ -26,4 +26,14 @@ CREATE TABLE public.manufacturers
     CONSTRAINT manufacturers_pk PRIMARY KEY (id)
 )
 
+CREATE TABLE public.drivers
+(
+    id integer NOT NULL DEFAULT nextval('drivers_id_seq'::regclass),
+    name character varying(225) COLLATE pg_catalog."default" NOT NULL,
+    licence_number character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    deleted boolean DEFAULT false,
+    CONSTRAINT drivers_pk PRIMARY KEY (id)
+)
+
+
 
