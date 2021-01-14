@@ -1,5 +1,6 @@
 package core.dao.car;
 
+import core.dao.driver.DriverDaoJdbc;
 import core.lib.Dao;
 import core.model.Car;
 import core.model.DataProcessingException;
@@ -10,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,7 +43,23 @@ public class CarDaoJdbc implements CarDao {
     
     @Override
     public Optional<Car> get(Long id) {
-        return Optional.empty();
+        String exceptionMessage = "An error has occurred while retrieving data by car id = %d";
+        String select = "SELECT cars.id, model, manufacturer, name, country"
+                        + " FROM cars INNER JOIN manufacturers m on m.id = cars.manufacturer"
+                        + " WHERE (cars.id = ? AND cars.deleted = false);";
+        Car car;
+        try (Connection connection = ConnectionUtils.getConnection();
+             PreparedStatement getByIdStatement = connection.prepareStatement(select)) {
+            getByIdStatement.setLong(1, id);
+            ResultSet resultSet = getByIdStatement.executeQuery();
+            if (resultSet.next()) {
+//                return Optional.of(parseResultSet(resultSet));
+            }
+            return Optional.empty();
+        } catch (SQLException e) {
+            throw new DataProcessingException(String
+                    .format(exceptionMessage, id), e);
+        }
     }
     
     @Override
@@ -97,5 +115,23 @@ public class CarDaoJdbc implements CarDao {
         } catch (SQLException e) {
             throw new DataProcessingException(String.format(exceptionMessage, car.getId()), e);
         }
+    }
+    
+    private List<Driver> getDrivers(Car car) {
+        String exceptionMessage = "An error has occurred while retrieving data for %s";
+        String select = "SELECT DISTINCT drivers.id, name, licence_number"
+                        + " FROM drivers INNER JOIN cars_drivers cd ON cd.\"carId\" = "
+                        + car.getId() + " WHERE deleted = false";
+        List<Driver> list = new ArrayList<>();
+        try (Connection connection = ConnectionUtils.getConnection();
+        PreparedStatement selectDrivers = connection.prepareStatement(select)){
+            ResultSet resultSet = selectDrivers.executeQuery();
+            while (resultSet.next()) {
+                list.add(DriverDaoJdbc.parseToDriver(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new DataProcessingException(String.format(exceptionMessage, car), e);
+        }
+        return list;
     }
 }
