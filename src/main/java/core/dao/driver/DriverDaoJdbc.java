@@ -114,7 +114,7 @@ public class DriverDaoJdbc implements DriverDao {
     private Driver parseResultSet(ResultSet resultSet) throws SQLException {
         Long id = resultSet.getObject("id", Long.class);
         String name = resultSet.getObject("name", String.class);
-        String licence = resultSet.getObject("licence", String.class);
+        String licence = resultSet.getObject("licence_number", String.class);
         Driver driver = new Driver(name, licence);
         driver.setId(id);
         return driver;
