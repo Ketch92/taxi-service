@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,7 +21,7 @@ public class DriverDaoJdbc implements DriverDao {
         String insert = "INSERT INTO drivers(name, licence_number)"
                         + " VALUES(?, ?);";
         try (Connection con = ConnectionUtils.getConnection();
-             PreparedStatement insertStatement = con.prepareStatement(insert,
+                PreparedStatement insertStatement = con.prepareStatement(insert,
                      Statement.RETURN_GENERATED_KEYS)) {
             insertStatement.setString(1, driver.getName());
             insertStatement.setString(2, driver.getLicenceNumber());
@@ -38,35 +39,84 @@ public class DriverDaoJdbc implements DriverDao {
     
     @Override
     public Optional<Driver> get(Long id) {
-        return Optional.empty();
+        String select = "SELECT id, name, licence_number"
+                        + " FROM drivers"
+                        + " WHERE (id = ? AND deleted = false);";
+        try (Connection connection = ConnectionUtils.getConnection();
+                PreparedStatement getByIdStatement = connection.prepareStatement(select)) {
+            getByIdStatement.setLong(1, id);
+            ResultSet resultSet = getByIdStatement.executeQuery();
+            if (resultSet.next()) {
+                return Optional.of(parseResultSet(resultSet));
+            }
+            return Optional.empty();
+        } catch (SQLException e) {
+            throw new DataProcessingException(String
+                    .format("Failed to get driver by id = %d", id), e);
+        }
     }
     
     @Override
     public List<Driver> getAll() {
-        return null;
+        String select = "SELECT id, name, licence_number"
+                        + " FROM drivers"
+                        + " WHERE deleted = false;";
+        List<Driver> resultList = new ArrayList<>();
+        try (Connection con = ConnectionUtils.getConnection();
+                 PreparedStatement getAllStatement = con.prepareStatement(select)) {
+            ResultSet resultSet = getAllStatement.executeQuery();
+            while (resultSet.next()) {
+                resultList.add(parseResultSet(resultSet));
+            }
+            return resultList;
+        } catch (SQLException e) {
+            throw new DataProcessingException("Failed to get all drivers from database", e);
+        }
     }
     
     @Override
-    public Driver update(Driver value) {
-        return null;
+    public Driver update(Driver driver) {
+        String update = "UPDATE drivers SET name = ?,"
+                        + " licence_number = ? WHERE id = ? AND deleted = false";
+        try (Connection con = ConnectionUtils.getConnection();
+                 PreparedStatement updateStatement = con.prepareStatement(update)) {
+            updateStatement.setString(1, driver.getName());
+            updateStatement.setString(2, driver.getLicenceNumber());
+            updateStatement.setLong(3, driver.getId());
+            updateStatement.executeUpdate();
+        } catch (SQLException exception) {
+            throw new DataProcessingException(String.format("Failed to update the %s",
+                    driver), exception);
+        }
+        return driver;
     }
     
     @Override
     public boolean delete(Long id) {
-        return false;
+        String delete = "UPDATE drivers SET deleted = true WHERE id = ?";
+        int updated;
+        try (Connection con = ConnectionUtils.getConnection();
+                 PreparedStatement deleteStatement = con.prepareStatement(delete)) {
+            deleteStatement.setLong(1, id);
+            updated = deleteStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DataProcessingException(String
+                    .format("Failed to delete the driver with id = %s", id), e);
+        }
+        return updated > 0;
     }
     
     @Override
-    public boolean delete(Driver value) {
-        return false;
+    public boolean delete(Driver driver) {
+        return delete(driver.getId());
     }
     
-    private Manufacturer parseResultSet(ResultSet resultSet) throws SQLException {
+    private Driver parseResultSet(ResultSet resultSet) throws SQLException {
         Long id = resultSet.getObject("id", Long.class);
         String name = resultSet.getObject("name", String.class);
         String licence = resultSet.getObject("licence", String.class);
-        Manufacturer manufacturer = new Manufacturer(name, licence);
-        manufacturer.setId(id);
-        return manufacturer;
+        Driver driver = new Driver(name, licence);
+        driver.setId(id);
+        return driver;
     }
 }

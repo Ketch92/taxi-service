@@ -21,9 +21,9 @@ public class Main {
         CarService carService = (CarService) injector.getInstance(CarService.class);
         DriverService driverService = (DriverService) injector.getInstance(DriverService.class);
         
-        testManufacturerService(manufacturerService);
+//        testManufacturerService(manufacturerService);
         testDriverService(driverService);
-        testCarService(carService, manufacturerService.getAll(), driverService.getAll());
+//        testCarService(carService, manufacturerService.getAll(), driverService.getAll());
     }
     
     private static void testManufacturerService(ManufacturerService manufacturerService) {

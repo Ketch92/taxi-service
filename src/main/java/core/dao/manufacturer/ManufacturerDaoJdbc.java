@@ -85,7 +85,7 @@ public class ManufacturerDaoJdbc implements ManufacturerDao {
             updateStatement.executeUpdate();
         } catch (SQLException exception) {
             throw new DataProcessingException(String.format("Failed to update the %s",
-                    manufacturer.toString()), exception);
+                    manufacturer), exception);
         }
         return manufacturer;
     }
