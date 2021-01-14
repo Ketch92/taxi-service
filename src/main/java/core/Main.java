@@ -22,7 +22,7 @@ public class Main {
         DriverService driverService = (DriverService) injector.getInstance(DriverService.class);
         
 //        testManufacturerService(manufacturerService);
-        testDriverService(driverService);
+//        testDriverService(driverService);
 //        testCarService(carService, manufacturerService.getAll(), driverService.getAll());
     }
     
@@ -41,7 +41,7 @@ public class Main {
         manufacturerService.getAll().forEach(System.out::println);
         System.out.println("printed all manufacturers\n");
         
-        System.out.println(manufacturerService.get(3L).toString());
+        System.out.println(manufacturerService.get(5L).toString());
         System.out.println("it was the data of 3rd manufacturer");
         
         Manufacturer updated = new Manufacturer("FGT", "Volyn");
