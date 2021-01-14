@@ -19,14 +19,13 @@ public class CarDaoJdbc implements CarDao {
     public Car add(Car car) {
         String insertCar = "INSERT INTO cars(model, manufacturer)"
                         + " VALUES(?, ?);";
-        String insertDrivers = "";
         try (Connection con = ConnectionUtils.getConnection();
              PreparedStatement insertCarStatement = con.prepareStatement(insertCar,
                      Statement.RETURN_GENERATED_KEYS)) {
             insertCarStatement.setString(1, car.getModel());
             insertCarStatement.setLong(2, car.getManufacturer().getId());
             insertCarStatement.executeUpdate();
-            
+    
             ResultSet resultSet = insertCarStatement.getGeneratedKeys();
             if (resultSet.next()) {
                 car.setId(resultSet.getObject("id", Long.class));
@@ -35,6 +34,8 @@ public class CarDaoJdbc implements CarDao {
             throw new DataProcessingException(String
                     .format("Failed to insert the %s to database", car), e);
         }
+        removeDrivers(car);
+        insertDrivers(car);
         return car;
     }
     
@@ -86,17 +87,15 @@ public class CarDaoJdbc implements CarDao {
         }
     }
     
-    private void removeDrivers(Long carId) {
+    private void removeDrivers(Car car) {
         String exceptionMessage = "An error occurred removing drivers for car with id = %d";
-        String remove = "DELETE FROM cars_drivers WHERE \"carId\" = " + carId;
+        String remove = "DELETE FROM cars_drivers WHERE \"carId\" = " + car.getId()
+                + " AND EXISTS(SELECT id WHERE \"carId\" = " + car.getId() + ")";
         try (Connection connection = ConnectionUtils.getConnection();
              PreparedStatement removeStatement = connection.prepareStatement(remove)) {
-            int wasAdded = removeStatement.executeUpdate();
-            if (wasAdded == 0) {
-                throw new DataProcessingException(String.format(exceptionMessage, carId));
-            }
+            removeStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new DataProcessingException(String.format(exceptionMessage, carId), e);
+            throw new DataProcessingException(String.format(exceptionMessage, car.getId()), e);
         }
     }
 }

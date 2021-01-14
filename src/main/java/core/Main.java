@@ -21,9 +21,16 @@ public class Main {
         CarService carService = (CarService) injector.getInstance(CarService.class);
         DriverService driverService = (DriverService) injector.getInstance(DriverService.class);
         
-//        testManufacturerService(manufacturerService);
-//        testDriverService(driverService);
-//        testCarService(carService, manufacturerService.getAll(), driverService.getAll());
+        /**
+        testManufacturerService(manufacturerService);
+        testDriverService(driverService);
+        testCarService(carService, manufacturerService.getAll(), driverService.getAll());
+        */
+        List<Driver> list = driverService.getAll();
+        Manufacturer manufacturer = manufacturerService.get(17L);
+        Car car = new Car("Tesla S", manufacturer);
+        car.setDriverList(list);
+        carService.add(car);
     }
     
     private static void testManufacturerService(ManufacturerService manufacturerService) {
