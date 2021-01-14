@@ -20,8 +20,8 @@ public class ManufacturerDaoJdbc implements ManufacturerDao {
         String insert = "INSERT INTO manufacturers(name, country)"
                         + " VALUES(?, ?);";
         try (Connection con = ConnectionUtils.getConnection();
-             PreparedStatement insertStatement = con.prepareStatement(insert,
-                     Statement.RETURN_GENERATED_KEYS)) {
+                PreparedStatement insertStatement = con.prepareStatement(insert,
+                         Statement.RETURN_GENERATED_KEYS)) {
             insertStatement.setString(1, manufacturer.getName());
             insertStatement.setString(2, manufacturer.getCountry());
             insertStatement.executeUpdate();
@@ -42,7 +42,7 @@ public class ManufacturerDaoJdbc implements ManufacturerDao {
                         + " FROM manufacturers"
                         + " WHERE (id = ? AND deleted = false);";
         try (Connection connection = ConnectionUtils.getConnection();
-             PreparedStatement getByIdStatement = connection.prepareStatement(select)) {
+                PreparedStatement getByIdStatement = connection.prepareStatement(select)) {
             getByIdStatement.setLong(1, id);
             ResultSet resultSet = getByIdStatement.executeQuery();
             if (resultSet.next()) {
@@ -62,7 +62,7 @@ public class ManufacturerDaoJdbc implements ManufacturerDao {
                         + " WHERE deleted = false;";
         List<Manufacturer> resultList = new ArrayList<>();
         try (Connection con = ConnectionUtils.getConnection();
-             PreparedStatement getAllStatement = con.prepareStatement(select)) {
+                PreparedStatement getAllStatement = con.prepareStatement(select)) {
             ResultSet resultSet = getAllStatement.executeQuery();
             while (resultSet.next()) {
                 resultList.add(getManufacturerFromResultSet(resultSet));
@@ -78,7 +78,7 @@ public class ManufacturerDaoJdbc implements ManufacturerDao {
         String update = "UPDATE manufacturers SET name = ?,"
                         + " country = ? WHERE id = ? AND deleted = false";
         try (Connection con = ConnectionUtils.getConnection();
-             PreparedStatement updateStatement = con.prepareStatement(update)) {
+                 PreparedStatement updateStatement = con.prepareStatement(update)) {
             updateStatement.setString(1, manufacturer.getName());
             updateStatement.setString(2, manufacturer.getCountry());
             updateStatement.setLong(3, manufacturer.getId());
@@ -95,7 +95,7 @@ public class ManufacturerDaoJdbc implements ManufacturerDao {
         String delete = "UPDATE manufacturers SET deleted = true WHERE id = ?";
         int updated;
         try (Connection con = ConnectionUtils.getConnection();
-             PreparedStatement deleteStatement = con.prepareStatement(delete)) {
+                 PreparedStatement deleteStatement = con.prepareStatement(delete)) {
             deleteStatement.setLong(1, id);
             updated = deleteStatement.executeUpdate();
         } catch (SQLException e) {
