@@ -52,7 +52,7 @@ public class CarDaoJdbc implements CarDao {
     
     @Override
     public Optional<Car> get(Long id) {
-        String select = "SELECT cars.id, model, manufacturer, name, country"
+        String select = "SELECT cars.id as carId, model, manufacturer as mfId, name, country"
                         + " FROM cars INNER JOIN manufacturers m on m.id = cars.manufacturer"
                         + " WHERE (cars.id = ? AND cars.deleted = false);";
         Car car;

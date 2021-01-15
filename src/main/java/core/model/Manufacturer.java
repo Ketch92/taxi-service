@@ -12,7 +12,7 @@ public class Manufacturer {
         this.country = country;
     }
     
-    private Manufacturer(Long id, String name, String country) {
+    public Manufacturer(Long id, String name, String country) {
         this.id = id;
         this.name = name;
         this.country = country;
