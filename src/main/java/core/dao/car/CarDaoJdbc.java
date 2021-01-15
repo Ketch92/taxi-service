@@ -53,22 +53,25 @@ public class CarDaoJdbc implements CarDao {
     @Override
     public Optional<Car> get(Long id) {
         String select = "SELECT cars.id as carId, model, manufacturer as mfId, name, country"
-                        + " FROM cars INNER JOIN manufacturers m on m.id = cars.manufacturer"
+                        + " FROM cars INNER JOIN manufacturers mf on mf.id = cars.manufacturer"
                         + " WHERE (cars.id = ? AND cars.deleted = false);";
-        Car car;
+        Car car = null;
         try (Connection connection = ConnectionUtils.getConnection();
                 PreparedStatement getByIdStatement = connection.prepareStatement(select)) {
             getByIdStatement.setLong(1, id);
             ResultSet resultSet = getByIdStatement.executeQuery();
             if (resultSet.next()) {
-//                return Optional.of(parseResultSet(resultSet));
+                car = DaoUtils.parseToCar(resultSet);
             }
-            return Optional.empty();
         } catch (SQLException e) {
             throw new DataProcessingException(String
                     .format(ErrorMessages.GET.getMessage(),
                             Car.class.getSimpleName(), id), e);
         }
+        if (car != null) {
+            car.setDriverList(getDrivers(car.getId()));
+        }
+        return Optional.ofNullable(car);
     }
     
     @Override

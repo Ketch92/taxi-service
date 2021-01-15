@@ -28,9 +28,11 @@ public class Main {
         */
         List<Driver> list = driverService.getAll();
         Manufacturer manufacturer = manufacturerService.get(17L);
-        Car car = new Car("Tesla S", manufacturer);
-        car.setDriverList(list);
-        carService.add(car);
+        Car car = carService.get(6L);
+        System.out.println(car);
+        car.getDriverList().forEach(System.out::println);
+        System.out.println(car.getDriverList().size());
+//        car.setDriverList(list);
     }
     
     private static void testManufacturerService(ManufacturerService manufacturerService) {
