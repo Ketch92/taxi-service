@@ -26,12 +26,7 @@ public class Main {
         testDriverService(driverService);
         testCarService(carService, manufacturerService.getAll(), driverService.getAll());
         */
-        List<Driver> list = driverService.getAll();
-        Manufacturer manufacturer = manufacturerService.get(17L);
-        Car car = carService.get(6L);
-        System.out.println(car);
-        car.getDriverList().forEach(System.out::println);
-        System.out.println(car.getDriverList().size());
+        carService.getAll().forEach(System.out::println);
 //        car.setDriverList(list);
     }
     

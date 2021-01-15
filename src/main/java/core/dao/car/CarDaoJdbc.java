@@ -76,7 +76,25 @@ public class CarDaoJdbc implements CarDao {
     
     @Override
     public List<Car> getAll() {
-        return null;
+        List<Car> returnList = new ArrayList<>();
+        String getAll = "SELECT cars.id as carId, model, manufacturer as mfId, name, country" +
+                        " FROM cars INNER JOIN manufacturers mf on mf.id = cars.manufacturer" +
+                        " WHERE cars.deleted = false";
+        try (Connection connection = ConnectionUtils.getConnection();
+                PreparedStatement getAllStatement = connection.prepareStatement(getAll)) {
+            ResultSet resultSet = getAllStatement.executeQuery();
+            while (resultSet.next()) {
+                returnList.add(DaoUtils.parseToCar(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new DataProcessingException(String
+                    .format(ErrorMessages.GET_ALL.getMessage(),
+                            Car.class.getSimpleName()), e);
+        }
+        for (Car car : returnList) {
+            car.setDriverList(getDrivers(car.getId()));
+        }
+        return returnList;
     }
     
     @Override
