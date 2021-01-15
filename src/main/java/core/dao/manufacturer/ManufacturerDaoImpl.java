@@ -37,9 +37,4 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         }
         return false;
     }
-    
-    @Override
-    public boolean delete(Manufacturer manufacturer) {
-        return delete(manufacturer.getId());
-    }
 }

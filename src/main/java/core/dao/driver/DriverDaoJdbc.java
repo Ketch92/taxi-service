@@ -105,9 +105,4 @@ public class DriverDaoJdbc implements DriverDao {
         }
         return updated > 0;
     }
-    
-    @Override
-    public boolean delete(Driver driver) {
-        return delete(driver.getId());
-    }
 }

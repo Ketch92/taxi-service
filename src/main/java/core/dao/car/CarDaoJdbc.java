@@ -79,11 +79,6 @@ public class CarDaoJdbc implements CarDao {
     }
     
     @Override
-    public boolean delete(Car car) {
-        return false;
-    }
-    
-    @Override
     public List<Car> getAllByDriver(Long driverId) {
         return null;
     }

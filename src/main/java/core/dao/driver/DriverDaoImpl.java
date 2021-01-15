@@ -37,9 +37,4 @@ public class DriverDaoImpl implements DriverDao {
         }
         return false;
     }
-    
-    @Override
-    public boolean delete(Driver driver) {
-        return delete(driver.getId());
-    }
 }

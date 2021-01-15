@@ -41,11 +41,6 @@ public class CarDaoImpl implements CarDao {
     }
 
     @Override
-    public boolean delete(Car car) {
-        return delete(car.getId());
-    }
-
-    @Override
     public List<Car> getAllByDriver(Long driverId) {
         return Storage.cars.values().stream()
                 .filter(c -> c.getDriverList()

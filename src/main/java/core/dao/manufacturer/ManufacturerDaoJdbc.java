@@ -105,9 +105,4 @@ public class ManufacturerDaoJdbc implements ManufacturerDao {
         }
         return updated > 0;
     }
-    
-    @Override
-    public boolean delete(Manufacturer manufacturer) {
-        return delete(manufacturer.getId());
-    }
 }
