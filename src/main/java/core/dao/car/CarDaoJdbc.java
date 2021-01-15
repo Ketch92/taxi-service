@@ -6,6 +6,7 @@ import core.lib.Dao;
 import core.model.Car;
 import core.model.DataProcessingException;
 import core.model.Driver;
+import core.model.Manufacturer;
 import core.utils.ConnectionUtils;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -101,7 +102,19 @@ public class CarDaoJdbc implements CarDao {
     public Car update(Car car) {
         removeDrivers(car);
         insertDrivers(car);
-        
+        Manufacturer manufacturer = car.getManufacturer();
+        String update = "UPDATE cars SET model = ?, manufacturer = ?"
+                        + " WHERE id = ? AND deleted = false";
+        try (Connection connection = ConnectionUtils.getConnection();
+                PreparedStatement updateStatement = connection.prepareStatement(update)) {
+            updateStatement.setString(1, car.getModel());
+            updateStatement.setLong(2, car.getManufacturer().getId());
+            updateStatement.setLong(3, car.getId());
+            updateStatement.executeUpdate();
+        } catch (SQLException exception) {
+            throw new DataProcessingException(String
+                    .format(ErrorMessages.UPDATE.getMessage(), car), exception);
+        }
         return car;
     }
     
@@ -145,9 +158,10 @@ public class CarDaoJdbc implements CarDao {
     
     private void removeDrivers(Car car) {
         String remove = "DELETE FROM cars_drivers WHERE \"carId\" = " + car.getId()
-                + " AND EXISTS(SELECT id WHERE \"carId\" = " + car.getId() + ")";
+                + " AND EXISTS(SELECT id WHERE \"carId\" = ?)";
         try (Connection connection = ConnectionUtils.getConnection();
                 PreparedStatement removeStatement = connection.prepareStatement(remove)) {
+            removeStatement.setLong(1, car.getId());
             removeStatement.executeUpdate();
         } catch (SQLException e) {
             throw new DataProcessingException(String

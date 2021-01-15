@@ -26,8 +26,13 @@ public class Main {
         testDriverService(driverService);
         testCarService(carService, manufacturerService.getAll(), driverService.getAll());
         */
-        carService.delete(7L);
-        carService.getAll().forEach(System.out::println);
+        Manufacturer manufacturer = manufacturerService.get(8L);
+        Car car = new Car(7L, "Zorboid", manufacturer);
+//        carService.update(car);
+        Car fromDB = carService.get(7L);
+        System.out.println(car);
+        System.out.println(fromDB);
+//        carService.getAll().forEach(System.out::println);
 //        car.setDriverList(list);
     }
     
