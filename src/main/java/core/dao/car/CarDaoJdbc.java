@@ -95,6 +95,66 @@ public class CarDaoJdbc implements CarDao {
         }
         return returnList;
     }
+
+    /**
+    public List<Car> getAll() {
+        String query = "SELECT cars.id AS car_id, cars.model, m.id AS m_id, "
+                       + "m.name AS m_name, m.country AS m_country, "
+                       + "d.id AS d_id, d.name AS d_name, d.licence_number FROM cars "
+                       + "LEFT JOIN cars_drivers cd ON cars.id = cd.\"carId\" "
+                       + "LEFT JOIN drivers d ON d.id = cd.\"driverId\" "
+                       + "LEFT JOIN manufacturers m ON cars.manufacturer = m.id "
+                       + "WHERE cars.deleted = false";
+        List<Car> cars = new ArrayList<>();
+        try (Connection connection = ConnectionUtils.getConnection();
+             PreparedStatement getAllStatement = connection.prepareStatement(query,
+                     ResultSet.TYPE_SCROLL_INSENSITIVE,
+                     ResultSet.CONCUR_READ_ONLY)) {
+            ResultSet resultSet = getAllStatement.executeQuery();
+            while (resultSet.next()) {
+                cars.add(createCarInstance(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new DataProcessingException("Could not get all cars", e);
+        }
+        return cars;
+    }
+    
+    private Car createCarInstance(ResultSet resultSet) throws SQLException {
+        Long carId = resultSet.getObject("car_id", Long.class);
+        String model = resultSet.getObject("model", String.class);
+        List<Driver> drivers = new ArrayList<>();
+        Car car = new Car(model, createManufacturerInstance(resultSet));
+        do {
+            Driver driver = createDriverInstance(resultSet);
+            if (driver.getId() != null) {
+                drivers.add(createDriverInstance(resultSet));
+            }
+        } while (resultSet.next() && resultSet.getObject("car_id", Long.class).equals(carId));
+        resultSet.relative(-1);
+        car.setId(carId);
+        car.setDriverList(drivers);
+        return car;
+    }
+    
+    private Manufacturer createManufacturerInstance(ResultSet resultSet) throws SQLException {
+        Long manufacturerId = resultSet.getObject("m_id", Long.class);
+        String name = resultSet.getObject("m_name", String.class);
+        String country = resultSet.getObject("m_country", String.class);
+        Manufacturer manufacturer = new Manufacturer(name, country);
+        manufacturer.setId(manufacturerId);
+        return manufacturer;
+    }
+    
+    private Driver createDriverInstance(ResultSet resultSet) throws SQLException {
+        Long driverId = resultSet.getObject("d_id", Long.class);
+        String name = resultSet.getObject("d_name", String.class);
+        String licenseNumber = resultSet.getObject("licence_number", String.class);
+        Driver driver = new Driver(name, licenseNumber);
+        driver.setId(driverId);
+        return driver;
+    }
+    */
     
     @Override
     public Car update(Car car) {
