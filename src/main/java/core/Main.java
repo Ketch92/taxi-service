@@ -10,6 +10,7 @@ import core.service.manufacturer.ManufacturerService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class Main {
     private static final Injector injector = Injector.getInstance(Main.class.getPackageName());
@@ -26,13 +27,13 @@ public class Main {
         testDriverService(driverService);
         testCarService(carService, manufacturerService.getAll(), driverService.getAll());
         */
-        Manufacturer manufacturer = manufacturerService.get(8L);
-        Car car = new Car(7L, "Zorboid", manufacturer);
+//        Manufacturer manufacturer = manufacturerService.get(5L);
+//        List<Driver> drivers = driverService.getAll();
+//        drivers = drivers.stream().filter(i -> i.getId() % 2 == 0).collect(Collectors.toList());
+//        Car car = new Car(7L, "Zorboid", manufacturer);
+//        car.setDriverList(drivers);
 //        carService.update(car);
-        Car fromDB = carService.get(7L);
-        System.out.println(car);
-        System.out.println(fromDB);
-//        carService.getAll().forEach(System.out::println);
+        carService.getAllByDriver(21L).forEach(System.out::println);
 //        car.setDriverList(list);
     }
     
