@@ -3,6 +3,7 @@ package core.dao.manufacturer;
 import core.dao.DaoUtils;
 import core.lib.Dao;
 import core.model.DataProcessingException;
+import core.model.ErrorMessages;
 import core.model.Manufacturer;
 import core.utils.ConnectionUtils;
 import java.sql.Connection;
@@ -32,7 +33,7 @@ public class ManufacturerDaoJdbc implements ManufacturerDao {
             }
         } catch (SQLException e) {
             throw new DataProcessingException(String
-                    .format("Failed to insert the %s to database", manufacturer), e);
+                    .format(ErrorMessages.ADD.getMessage(), manufacturer), e);
         }
         return manufacturer;
     }
@@ -52,7 +53,8 @@ public class ManufacturerDaoJdbc implements ManufacturerDao {
             return Optional.empty();
         } catch (SQLException e) {
             throw new DataProcessingException(String
-                    .format("Failed to get manufacturer by id = %d", id), e);
+                    .format(ErrorMessages.GET.getMessage(),
+                            Manufacturer.class.getSimpleName(), id), e);
         }
     }
     
@@ -70,7 +72,9 @@ public class ManufacturerDaoJdbc implements ManufacturerDao {
             }
             return resultList;
         } catch (SQLException e) {
-            throw new DataProcessingException("Failed to get all manufacturers from database", e);
+            throw new DataProcessingException(String
+                    .format(ErrorMessages.GET_ALL.getMessage(),
+                            Manufacturer.class.getSimpleName()), e);
         }
     }
     
@@ -85,8 +89,9 @@ public class ManufacturerDaoJdbc implements ManufacturerDao {
             updateStatement.setLong(3, manufacturer.getId());
             updateStatement.executeUpdate();
         } catch (SQLException exception) {
-            throw new DataProcessingException(String.format("Failed to update the %s",
-                    manufacturer), exception);
+            throw new DataProcessingException(String
+                    .format(ErrorMessages.UPDATE.getMessage(),
+                            manufacturer), exception);
         }
         return manufacturer;
     }
@@ -101,7 +106,8 @@ public class ManufacturerDaoJdbc implements ManufacturerDao {
             updated = deleteStatement.executeUpdate();
         } catch (SQLException e) {
             throw new DataProcessingException(String
-                    .format("Failed to delete the manufacturer with id = %s", id), e);
+                    .format(ErrorMessages.DELETE.getMessage(),
+                            Manufacturer.class.getSimpleName(), id), e);
         }
         return updated > 0;
     }

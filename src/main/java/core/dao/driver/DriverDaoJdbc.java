@@ -1,6 +1,7 @@
 package core.dao.driver;
 
 import core.dao.DaoUtils;
+import core.model.ErrorMessages;
 import core.lib.Dao;
 import core.model.DataProcessingException;
 import core.model.Driver;
@@ -22,7 +23,7 @@ public class DriverDaoJdbc implements DriverDao {
                         + " VALUES(?, ?);";
         try (Connection con = ConnectionUtils.getConnection();
                 PreparedStatement insertStatement = con.prepareStatement(insert,
-                     Statement.RETURN_GENERATED_KEYS)) {
+                            Statement.RETURN_GENERATED_KEYS)) {
             insertStatement.setString(1, driver.getName());
             insertStatement.setString(2, driver.getLicenceNumber());
             insertStatement.executeUpdate();
@@ -32,7 +33,8 @@ public class DriverDaoJdbc implements DriverDao {
             }
         } catch (SQLException e) {
             throw new DataProcessingException(String
-                    .format("Failed to insert the %s to database", driver), e);
+                    .format(ErrorMessages.ADD.getMessage(),
+                            Driver.class.getSimpleName(), driver), e);
         }
         return driver;
     }
@@ -52,7 +54,7 @@ public class DriverDaoJdbc implements DriverDao {
             return Optional.empty();
         } catch (SQLException e) {
             throw new DataProcessingException(String
-                    .format("Failed to get driver by id = %d", id), e);
+                    .format(ErrorMessages.GET.getMessage(), Driver.class.getSimpleName(), id), e);
         }
     }
     
@@ -70,7 +72,9 @@ public class DriverDaoJdbc implements DriverDao {
             }
             return resultList;
         } catch (SQLException e) {
-            throw new DataProcessingException("Failed to get all drivers from database", e);
+            throw new DataProcessingException(String
+                    .format(ErrorMessages.GET_ALL.getMessage(),
+                    Driver.class.getSimpleName()), e);
         }
     }
     
@@ -85,7 +89,7 @@ public class DriverDaoJdbc implements DriverDao {
             updateStatement.setLong(3, driver.getId());
             updateStatement.executeUpdate();
         } catch (SQLException exception) {
-            throw new DataProcessingException(String.format("Failed to update the %s",
+            throw new DataProcessingException(String.format(ErrorMessages.UPDATE.getMessage(),
                     driver), exception);
         }
         return driver;
@@ -101,7 +105,7 @@ public class DriverDaoJdbc implements DriverDao {
             updated = deleteStatement.executeUpdate();
         } catch (SQLException e) {
             throw new DataProcessingException(String
-                    .format("Failed to delete the driver with id = %s", id), e);
+                    .format(ErrorMessages.DELETE.getMessage(), Driver.class.getSimpleName(), id), e);
         }
         return updated > 0;
     }

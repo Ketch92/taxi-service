@@ -1,6 +1,7 @@
 package core.dao.car;
 
 import core.dao.DaoUtils;
+import core.model.ErrorMessages;
 import core.lib.Dao;
 import core.model.Car;
 import core.model.DataProcessingException;
@@ -17,13 +18,20 @@ import java.util.Optional;
 
 @Dao
 public class CarDaoJdbc implements CarDao {
+    public static final String INSERT_DRIVER_EXCEPTION =
+            "An error occurred while adding driver with id = %d";
+    private static final String REMOVE_DRIVER_EXCEPTION =
+            "An error occurred removing drivers for car with id = %d";
+    private static final String GET_DRIVERS_EXCEPTION =
+            "An error has occurred while retrieving data for car id %d";
+    
     @Override
     public Car add(Car car) {
         String insertCar = "INSERT INTO cars(model, manufacturer)"
                         + " VALUES(?, ?);";
         try (Connection con = ConnectionUtils.getConnection();
-             PreparedStatement insertCarStatement = con.prepareStatement(insertCar,
-                     Statement.RETURN_GENERATED_KEYS)) {
+                PreparedStatement insertCarStatement = con.prepareStatement(insertCar,
+                         Statement.RETURN_GENERATED_KEYS)) {
             insertCarStatement.setString(1, car.getModel());
             insertCarStatement.setLong(2, car.getManufacturer().getId());
             insertCarStatement.executeUpdate();
@@ -34,7 +42,8 @@ public class CarDaoJdbc implements CarDao {
             }
         } catch (SQLException e) {
             throw new DataProcessingException(String
-                    .format("Failed to insert the %s to database", car), e);
+                    .format(ErrorMessages.ADD.getMessage(),
+                            Car.class.getSimpleName(), car), e);
         }
         removeDrivers(car);
         insertDrivers(car);
@@ -43,13 +52,12 @@ public class CarDaoJdbc implements CarDao {
     
     @Override
     public Optional<Car> get(Long id) {
-        String exceptionMessage = "An error has occurred while retrieving data by car id = %d";
         String select = "SELECT cars.id, model, manufacturer, name, country"
                         + " FROM cars INNER JOIN manufacturers m on m.id = cars.manufacturer"
                         + " WHERE (cars.id = ? AND cars.deleted = false);";
         Car car;
         try (Connection connection = ConnectionUtils.getConnection();
-             PreparedStatement getByIdStatement = connection.prepareStatement(select)) {
+                PreparedStatement getByIdStatement = connection.prepareStatement(select)) {
             getByIdStatement.setLong(1, id);
             ResultSet resultSet = getByIdStatement.executeQuery();
             if (resultSet.next()) {
@@ -58,7 +66,8 @@ public class CarDaoJdbc implements CarDao {
             return Optional.empty();
         } catch (SQLException e) {
             throw new DataProcessingException(String
-                    .format(exceptionMessage, id), e);
+                    .format(ErrorMessages.GET.getMessage(),
+                            Car.class.getSimpleName(), id), e);
         }
     }
     
@@ -83,49 +92,49 @@ public class CarDaoJdbc implements CarDao {
     }
     
     private void insertDrivers(Car car) {
-        String exceptionMessage = "An error occurred while adding driver with id = %d";
         String insert = "INSERT INTO cars_drivers(\"carId\", \"driverId\") VALUES ("
                         + car.getId() + ", ?);";
         try (Connection connection = ConnectionUtils.getConnection();
-             PreparedStatement insertStatement = connection.prepareStatement(insert)) {
+                 PreparedStatement insertStatement = connection.prepareStatement(insert)) {
             for (Driver driver : car.getDriverList()) {
                 insertStatement.setLong(1, driver.getId());
                 int wasAdded = insertStatement.executeUpdate();
                 if (wasAdded == 0) {
-                    throw new DataProcessingException(String.format(exceptionMessage, driver.getId()));
+                    throw new DataProcessingException(String.format(INSERT_DRIVER_EXCEPTION,
+                            driver.getId()));
                 }
             }
         } catch (SQLException e) {
-            throw new DataProcessingException(String.format(exceptionMessage, car.getId()), e);
+            throw new DataProcessingException(String.format(INSERT_DRIVER_EXCEPTION, car.getId()), e);
         }
     }
     
     private void removeDrivers(Car car) {
-        String exceptionMessage = "An error occurred removing drivers for car with id = %d";
         String remove = "DELETE FROM cars_drivers WHERE \"carId\" = " + car.getId()
                 + " AND EXISTS(SELECT id WHERE \"carId\" = " + car.getId() + ")";
         try (Connection connection = ConnectionUtils.getConnection();
-             PreparedStatement removeStatement = connection.prepareStatement(remove)) {
+                PreparedStatement removeStatement = connection.prepareStatement(remove)) {
             removeStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new DataProcessingException(String.format(exceptionMessage, car.getId()), e);
+            throw new DataProcessingException(String
+                    .format(REMOVE_DRIVER_EXCEPTION, car.getId()), e);
         }
     }
     
     private List<Driver> getDrivers(Long carId) {
-        String exceptionMessage = "An error has occurred while retrieving data for %s";
         String select = "SELECT DISTINCT drivers.id, name, licence_number"
                         + " FROM drivers INNER JOIN cars_drivers cd ON cd.\"carId\" = "
                         + carId + " WHERE deleted = false";
         List<Driver> list = new ArrayList<>();
         try (Connection connection = ConnectionUtils.getConnection();
-        PreparedStatement selectDrivers = connection.prepareStatement(select)){
+                PreparedStatement selectDrivers = connection.prepareStatement(select)) {
             ResultSet resultSet = selectDrivers.executeQuery();
             while (resultSet.next()) {
                 list.add(DaoUtils.parseToDriver(resultSet));
             }
         } catch (SQLException e) {
-            throw new DataProcessingException(String.format(exceptionMessage, carId), e);
+            throw new DataProcessingException(String
+                    .format(GET_DRIVERS_EXCEPTION, carId), e);
         }
         return list;
     }

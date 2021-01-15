@@ -36,9 +36,4 @@ public class ManufacturerServiceImpl implements ManufacturerService {
     public boolean delete(Long id) {
         return dao.delete(id);
     }
-    
-    @Override
-    public boolean delete(Manufacturer manufacturer) {
-        return dao.delete(manufacturer);
-    }
 }

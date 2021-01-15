@@ -15,7 +15,7 @@ public class DaoUtils {
         return driver;
     }
     
-    public static Manufacturer parseToManufacturer (ResultSet resultSet) throws SQLException {
+    public static Manufacturer parseToManufacturer(ResultSet resultSet) throws SQLException {
         Long id = resultSet.getObject("id", Long.class);
         String name = resultSet.getObject("name", String.class);
         String country = resultSet.getObject("country", String.class);
