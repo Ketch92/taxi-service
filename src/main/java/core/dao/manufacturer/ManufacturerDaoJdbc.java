@@ -1,5 +1,6 @@
 package core.dao.manufacturer;
 
+import core.dao.DaoUtils;
 import core.lib.Dao;
 import core.model.DataProcessingException;
 import core.model.Manufacturer;
@@ -46,7 +47,7 @@ public class ManufacturerDaoJdbc implements ManufacturerDao {
             getByIdStatement.setLong(1, id);
             ResultSet resultSet = getByIdStatement.executeQuery();
             if (resultSet.next()) {
-                return Optional.of(parseToManufacturer(resultSet));
+                return Optional.of(DaoUtils.parseToManufacturer(resultSet));
             }
             return Optional.empty();
         } catch (SQLException e) {
@@ -65,7 +66,7 @@ public class ManufacturerDaoJdbc implements ManufacturerDao {
                 PreparedStatement getAllStatement = con.prepareStatement(select)) {
             ResultSet resultSet = getAllStatement.executeQuery();
             while (resultSet.next()) {
-                resultList.add(parseToManufacturer(resultSet));
+                resultList.add(DaoUtils.parseToManufacturer(resultSet));
             }
             return resultList;
         } catch (SQLException e) {
@@ -108,14 +109,5 @@ public class ManufacturerDaoJdbc implements ManufacturerDao {
     @Override
     public boolean delete(Manufacturer manufacturer) {
         return delete(manufacturer.getId());
-    }
-    
-    public static Manufacturer parseToManufacturer (ResultSet resultSet) throws SQLException {
-        Long id = resultSet.getObject("id", Long.class);
-        String name = resultSet.getObject("name", String.class);
-        String country = resultSet.getObject("country", String.class);
-        Manufacturer manufacturer = new Manufacturer(name, country);
-        manufacturer.setId(id);
-        return manufacturer;
     }
 }

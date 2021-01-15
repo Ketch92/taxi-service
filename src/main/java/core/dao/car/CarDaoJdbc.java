@@ -1,5 +1,6 @@
 package core.dao.car;
 
+import core.dao.DaoUtils;
 import core.dao.driver.DriverDaoJdbc;
 import core.lib.Dao;
 import core.model.Car;
@@ -127,7 +128,7 @@ public class CarDaoJdbc implements CarDao {
         PreparedStatement selectDrivers = connection.prepareStatement(select)){
             ResultSet resultSet = selectDrivers.executeQuery();
             while (resultSet.next()) {
-                list.add(DriverDaoJdbc.parseToDriver(resultSet));
+                list.add(DaoUtils.parseToDriver(resultSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException(String.format(exceptionMessage, car), e);

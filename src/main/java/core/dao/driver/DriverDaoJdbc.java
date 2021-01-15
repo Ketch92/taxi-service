@@ -1,5 +1,6 @@
 package core.dao.driver;
 
+import core.dao.DaoUtils;
 import core.lib.Dao;
 import core.model.DataProcessingException;
 import core.model.Driver;
@@ -46,7 +47,7 @@ public class DriverDaoJdbc implements DriverDao {
             getByIdStatement.setLong(1, id);
             ResultSet resultSet = getByIdStatement.executeQuery();
             if (resultSet.next()) {
-                return Optional.of(parseToDriver(resultSet));
+                return Optional.of(DaoUtils.parseToDriver(resultSet));
             }
             return Optional.empty();
         } catch (SQLException e) {
@@ -65,7 +66,7 @@ public class DriverDaoJdbc implements DriverDao {
                  PreparedStatement getAllStatement = con.prepareStatement(select)) {
             ResultSet resultSet = getAllStatement.executeQuery();
             while (resultSet.next()) {
-                resultList.add(parseToDriver(resultSet));
+                resultList.add(DaoUtils.parseToDriver(resultSet));
             }
             return resultList;
         } catch (SQLException e) {
@@ -108,14 +109,5 @@ public class DriverDaoJdbc implements DriverDao {
     @Override
     public boolean delete(Driver driver) {
         return delete(driver.getId());
-    }
-    
-    public static Driver parseToDriver(ResultSet resultSet) throws SQLException {
-        Long id = resultSet.getObject("id", Long.class);
-        String name = resultSet.getObject("name", String.class);
-        String licence = resultSet.getObject("licence_number", String.class);
-        Driver driver = new Driver(name, licence);
-        driver.setId(id);
-        return driver;
     }
 }
