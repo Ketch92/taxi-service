@@ -26,6 +26,7 @@ public class Main {
         testDriverService(driverService);
         testCarService(carService, manufacturerService.getAll(), driverService.getAll());
         */
+        carService.delete(7L);
         carService.getAll().forEach(System.out::println);
 //        car.setDriverList(list);
     }

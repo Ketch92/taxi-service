@@ -18,7 +18,7 @@ import java.util.Optional;
 
 @Dao
 public class CarDaoJdbc implements CarDao {
-    public static final String INSERT_DRIVER_EXCEPTION =
+    private static final String INSERT_DRIVER_EXCEPTION =
             "An error occurred while adding driver with id = %d";
     private static final String REMOVE_DRIVER_EXCEPTION =
             "An error occurred removing drivers for car with id = %d";
@@ -69,7 +69,7 @@ public class CarDaoJdbc implements CarDao {
                             Car.class.getSimpleName(), id), e);
         }
         if (car != null) {
-            car.setDriverList(getDrivers(car.getId()));
+            car.setDriverList(getDrivers(car));
         }
         return Optional.ofNullable(car);
     }
@@ -77,9 +77,9 @@ public class CarDaoJdbc implements CarDao {
     @Override
     public List<Car> getAll() {
         List<Car> returnList = new ArrayList<>();
-        String getAll = "SELECT cars.id as carId, model, manufacturer as mfId, name, country" +
-                        " FROM cars INNER JOIN manufacturers mf on mf.id = cars.manufacturer" +
-                        " WHERE cars.deleted = false";
+        String getAll = "SELECT cars.id as carId, model, manufacturer as mfId, name, country"
+                        + " FROM cars INNER JOIN manufacturers mf on mf.id = cars.manufacturer"
+                        + " WHERE cars.deleted = false";
         try (Connection connection = ConnectionUtils.getConnection();
                 PreparedStatement getAllStatement = connection.prepareStatement(getAll)) {
             ResultSet resultSet = getAllStatement.executeQuery();
@@ -92,19 +92,32 @@ public class CarDaoJdbc implements CarDao {
                             Car.class.getSimpleName()), e);
         }
         for (Car car : returnList) {
-            car.setDriverList(getDrivers(car.getId()));
+            car.setDriverList(getDrivers(car));
         }
         return returnList;
     }
     
     @Override
     public Car update(Car car) {
-        return null;
+        removeDrivers(car);
+        insertDrivers(car);
+        
+        return car;
     }
     
     @Override
     public boolean delete(Long id) {
-        return false;
+        String delete = "UPDATE cars SET deleted = true WHERE id = ?";
+        int updated;
+        try (Connection con = ConnectionUtils.getConnection();
+             PreparedStatement deleteStatement = con.prepareStatement(delete)) {
+            deleteStatement.setLong(1, id);
+            updated = deleteStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DataProcessingException(String
+                    .format(ErrorMessages.DELETE.getMessage(), Car.class.getSimpleName(), id), e);
+        }
+        return updated > 0;
     }
     
     @Override
@@ -142,10 +155,10 @@ public class CarDaoJdbc implements CarDao {
         }
     }
     
-    private List<Driver> getDrivers(Long carId) {
+    private List<Driver> getDrivers(Car car) {
         String select = "SELECT DISTINCT drivers.id, name, licence_number"
                         + " FROM drivers INNER JOIN cars_drivers cd ON cd.\"carId\" = "
-                        + carId + " WHERE deleted = false";
+                        + car.getId() + " WHERE deleted = false";
         List<Driver> list = new ArrayList<>();
         try (Connection connection = ConnectionUtils.getConnection();
                 PreparedStatement selectDrivers = connection.prepareStatement(select)) {
@@ -155,7 +168,7 @@ public class CarDaoJdbc implements CarDao {
             }
         } catch (SQLException e) {
             throw new DataProcessingException(String
-                    .format(GET_DRIVERS_EXCEPTION, carId), e);
+                    .format(GET_DRIVERS_EXCEPTION, car.getId()), e);
         }
         return list;
     }
