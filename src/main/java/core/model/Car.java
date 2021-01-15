@@ -16,6 +16,13 @@ public class Car {
         this.driverList = new ArrayList<>();
     }
     
+    private Car(Long id, String model, Manufacturer manufacturer, List<Driver> driverList) {
+        this.id = id;
+        this.model = model;
+        this.manufacturer = manufacturer;
+        this.driverList = driverList;
+    }
+    
     public void addDriver(Driver driver) {
         driverList.add(driver);
     }

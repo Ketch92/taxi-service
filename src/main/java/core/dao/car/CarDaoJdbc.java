@@ -1,7 +1,6 @@
 package core.dao.car;
 
 import core.dao.DaoUtils;
-import core.dao.driver.DriverDaoJdbc;
 import core.lib.Dao;
 import core.model.Car;
 import core.model.DataProcessingException;
@@ -113,11 +112,11 @@ public class CarDaoJdbc implements CarDao {
         }
     }
     
-    private List<Driver> getDrivers(Car car) {
+    private List<Driver> getDrivers(Long carId) {
         String exceptionMessage = "An error has occurred while retrieving data for %s";
         String select = "SELECT DISTINCT drivers.id, name, licence_number"
                         + " FROM drivers INNER JOIN cars_drivers cd ON cd.\"carId\" = "
-                        + car.getId() + " WHERE deleted = false";
+                        + carId + " WHERE deleted = false";
         List<Driver> list = new ArrayList<>();
         try (Connection connection = ConnectionUtils.getConnection();
         PreparedStatement selectDrivers = connection.prepareStatement(select)){
@@ -126,7 +125,7 @@ public class CarDaoJdbc implements CarDao {
                 list.add(DaoUtils.parseToDriver(resultSet));
             }
         } catch (SQLException e) {
-            throw new DataProcessingException(String.format(exceptionMessage, car), e);
+            throw new DataProcessingException(String.format(exceptionMessage, carId), e);
         }
         return list;
     }
