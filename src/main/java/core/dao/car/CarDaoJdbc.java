@@ -81,16 +81,19 @@ public class CarDaoJdbc implements CarDao {
     @Override
     public List<Car> getAll() {
         List<Car> returnList = new ArrayList<>();
-        String getAll = "SELECT cars.id as carId, model, manufacturer as mfId, name, country"
-                        + " FROM cars INNER JOIN manufacturers mf on mf.id = cars.manufacturer"
-                        + " WHERE cars.deleted = false";
+        String getAll = "SELECT cars.id as car_id, cars.model as car_model, cars.manufacturer as manufacturer_id,"
+                        + " m.name as manufacturer_name, m.country as manufacturer_country, d.id as driver_id,"
+                        + " d.name as driver_name, d.licence_number as driver_licence"
+                        + " FROM cars"
+                        + " JOIN manufacturers m ON m.id = cars.manufacturer"
+                        + " JOIN cars_drivers cd ON cd.\"car_Id\" = cars.id"
+                        + " JOIN drivers d on cd.\"driver_Id\" = d.id"
+                        + " WHERE cars.deleted = false AND d.deleted = false;";
         try (Connection connection = ConnectionUtils.getConnection();
                 PreparedStatement getAllStatement = connection.prepareStatement(getAll)) {
             ResultSet resultSet = getAllStatement.executeQuery();
-            while (resultSet.next()) {
-                Car car = DaoUtils.parseToCar(resultSet);
-                car.setDriverList(getDrivers(car, connection));
-                returnList.add(car);
+            if (resultSet.next()) {
+                returnList = getListCarParser(resultSet);
             }
         } catch (SQLException e) {
             throw new DataProcessingException(String
@@ -222,9 +225,21 @@ public class CarDaoJdbc implements CarDao {
         drivers.add(DaoUtils.parseToDriver(resultSet));
         while (resultSet.next()) {
             drivers.add(DaoUtils.parseToDriver(resultSet));
+            if (resultSet.getObject("car_id", Long.class) != carID) {
+                break;
+            }
         }
         
         car.setDriverList(drivers);
         return car;
+    }
+    
+    private List<Car> getListCarParser(ResultSet resultSet) throws SQLException {
+        List<Car> cars = new ArrayList<>();
+        cars.add(getCarParser(resultSet));
+        while (resultSet.next()) {
+            cars.add(getCarParser(resultSet));
+        }
+        return cars;
     }
 }
