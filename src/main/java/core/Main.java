@@ -25,7 +25,7 @@ public class Main {
         testManufacturerService(manufacturerService);
         testCarService(carService, manufacturerService.getAll(), driverService.getAll());
     }
-    
+    //
     private static void testManufacturerService(ManufacturerService manufacturerService) {
         Manufacturer first = new Manufacturer("AMW", "Ukraine");
         Manufacturer second = new Manufacturer("BMW", "Ukraine");
