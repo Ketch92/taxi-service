@@ -1,10 +1,10 @@
 package core.dao.driver;
 
 import core.dao.DaoUtils;
-import core.model.ErrorMessages;
 import core.lib.Dao;
 import core.model.DataProcessingException;
 import core.model.Driver;
+import core.model.ErrorMessages;
 import core.utils.ConnectionUtils;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -105,7 +105,8 @@ public class DriverDaoJdbc implements DriverDao {
             updated = deleteStatement.executeUpdate();
         } catch (SQLException e) {
             throw new DataProcessingException(String
-                    .format(ErrorMessages.DELETE.getMessage(), Driver.class.getSimpleName(), id), e);
+                    .format(ErrorMessages.DELETE.getMessage(),
+                            Driver.class.getSimpleName(), id), e);
         }
         return updated > 0;
     }

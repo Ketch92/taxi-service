@@ -1,11 +1,11 @@
 package core.dao.car;
 
 import core.dao.DaoUtils;
-import core.model.ErrorMessages;
 import core.lib.Dao;
 import core.model.Car;
 import core.model.DataProcessingException;
 import core.model.Driver;
+import core.model.ErrorMessages;
 import core.model.Manufacturer;
 import core.utils.ConnectionUtils;
 import java.sql.Connection;
@@ -121,7 +121,7 @@ public class CarDaoJdbc implements CarDao {
         String delete = "UPDATE cars SET deleted = true WHERE id = ?";
         int updated;
         try (Connection con = ConnectionUtils.getConnection();
-             PreparedStatement deleteStatement = con.prepareStatement(delete)) {
+                 PreparedStatement deleteStatement = con.prepareStatement(delete)) {
             deleteStatement.setLong(1, id);
             updated = deleteStatement.executeUpdate();
         } catch (SQLException e) {
@@ -138,7 +138,8 @@ public class CarDaoJdbc implements CarDao {
                                 + " cars.manufacturer as mfId, name, country"
                                 + " FROM cars_drivers cd"
                                 + " INNER JOIN cars ON cars.id = cd.\"car_Id\""
-                                + " INNER JOIN manufacturers ON cars.manufacturer = manufacturers.id"
+                                + " INNER JOIN manufacturers"
+                                + " ON cars.manufacturer = manufacturers.id"
                                 + " WHERE cd.\"driver_Id\" = ? AND cars.deleted = false";
         try (Connection connection = ConnectionUtils.getConnection();
                  PreparedStatement getAllStatement = connection.prepareStatement(getAllByDriver)) {
@@ -169,7 +170,8 @@ public class CarDaoJdbc implements CarDao {
                 }
             }
         } catch (SQLException e) {
-            throw new DataProcessingException(String.format(INSERT_DRIVER_EXCEPTION, car.getId()), e);
+            throw new DataProcessingException(String.format(INSERT_DRIVER_EXCEPTION,
+                    car.getId()), e);
         }
     }
     
