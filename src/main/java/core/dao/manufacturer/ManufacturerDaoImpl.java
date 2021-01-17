@@ -1,13 +1,11 @@
 package core.dao.manufacturer;
 
-import core.lib.Dao;
 import core.model.Manufacturer;
 import core.storage.Storage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer add(Manufacturer manufacturer) {
