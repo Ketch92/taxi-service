@@ -7,12 +7,9 @@ import core.model.Manufacturer;
 import core.service.car.CarService;
 import core.service.driver.DriverService;
 import core.service.manufacturer.ManufacturerService;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 public class Main {
     private static final Injector injector = Injector.getInstance(Main.class.getPackageName());
@@ -29,33 +26,6 @@ public class Main {
         testDriverService(driverService);
         testCarService(carService, manufacturerService.getAll(), driverService.getAll());
         */
-        
-        /**
-        Manufacturer manufacturer = manufacturerService.get(10L);
-        List<Driver> drivers = driverService.getAll();
-        for (int i = 0; i < 900; i++) {
-            Car car = new Car("Model " + i, manufacturer);
-            car.setDriverList(drivers);
-            carService.add(car);
-        }
-        */
-        List<Long> times = new ArrayList<>();
-        for (int i = 0; i < 50; i++) {
-            long start = System.currentTimeMillis();
-            List<Car> all = carService.getAll();
-            long end = System.currentTimeMillis();
-            times.add(end - start);
-        }
-        System.out.println(times.stream().mapToLong(i -> i).average());
-
-//        Manufacturer manufacturer = manufacturerService.get(5L);
-//        List<Driver> drivers = driverService.getAll();
-//        drivers = drivers.stream().filter(i -> i.getId() % 2 == 0).collect(Collectors.toList());
-//        Car car = new Car(7L, "Zorboid", manufacturer);
-//        car.setDriverList(drivers);
-//        carService.update(car);
-//        carService.getAllByDriver(21L).forEach(System.out::println);
-//        car.setDriverList(list);
     }
     
     private static void testManufacturerService(ManufacturerService manufacturerService) {
