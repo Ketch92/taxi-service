@@ -54,22 +54,21 @@ public class CarDaoJdbc implements CarDao {
     
     @Override
     public Optional<Car> get(Long id) {
-        String select = "SELECT cars.id, cars.model,"
-                        + " cars.manufacturer, m.name, m.country,"
-                        + " d.id, d.name, d.licence_number"
+        String select = "SELECT cars.id as car_id, cars.model as car_model, cars.manufacturer as manufacturer_id,"
+                        + " m.name as manufacturer_name, m.country as manufacturer_country, d.id as driver_id,"
+                        + " d.name as driver_name, d.licence_number as driver_licence"
                         + " FROM cars"
                         + " JOIN manufacturers m ON m.id = cars.manufacturer"
                         + " JOIN cars_drivers cd ON cd.\"car_Id\" = cars.id"
                         + " JOIN drivers d on cd.\"driver_Id\" = d.id"
-                        + " WHERE cars.id = 5 AND cars.deleted = false AND d.deleted = false;";
+                        + " WHERE cars.id = ? AND cars.deleted = false AND d.deleted = false;";
         Car car = null;
         try (Connection connection = ConnectionUtils.getConnection();
                 PreparedStatement getByIdStatement = connection.prepareStatement(select)) {
             getByIdStatement.setLong(1, id);
             ResultSet resultSet = getByIdStatement.executeQuery();
             if (resultSet.next()) {
-                car = DaoUtils.parseToCar(resultSet);
-                car.setDriverList(getDrivers(car, connection));
+                car = getCarParser(resultSet);
             }
         } catch (SQLException e) {
             throw new DataProcessingException(String
@@ -208,5 +207,24 @@ public class CarDaoJdbc implements CarDao {
                     .format(GET_DRIVERS_EXCEPTION, car.getId()), e);
         }
         return list;
+    }
+    
+    private Car getCarParser(ResultSet resultSet) throws SQLException {
+        Long manufacturerID = resultSet.getObject("manufacturer_id", Long.class);
+        String manufacturerName = resultSet.getObject("manufacturer_name", String.class);
+        String manufacturerCountry = resultSet.getObject("manufacturer_name", String.class);
+        
+        Long carID = resultSet.getObject("car_id", Long.class);
+        String carModel = resultSet.getObject("car_model", String.class);
+        Car car = new Car(carID, carModel, new Manufacturer(manufacturerID, manufacturerName, manufacturerCountry));
+        
+        List<Driver> drivers = new ArrayList<>();
+        drivers.add(DaoUtils.parseToDriver(resultSet));
+        while (resultSet.next()) {
+            drivers.add(DaoUtils.parseToDriver(resultSet));
+        }
+        
+        car.setDriverList(drivers);
+        return car;
     }
 }

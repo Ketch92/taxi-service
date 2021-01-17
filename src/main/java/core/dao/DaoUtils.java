@@ -8,9 +8,9 @@ import java.sql.SQLException;
 
 public class DaoUtils {
     public static Driver parseToDriver(ResultSet resultSet) throws SQLException {
-        Long id = resultSet.getObject("id", Long.class);
-        String name = resultSet.getObject("name", String.class);
-        String licence = resultSet.getObject("licence_number", String.class);
+        Long id = resultSet.getObject("driver_id", Long.class);
+        String name = resultSet.getObject("driver_name", String.class);
+        String licence = resultSet.getObject("driver_licence", String.class);
         Driver driver = new Driver(name, licence);
         driver.setId(id);
         return driver;
