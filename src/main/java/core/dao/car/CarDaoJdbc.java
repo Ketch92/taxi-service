@@ -143,22 +143,22 @@ public class CarDaoJdbc implements CarDao {
     @Override
     public List<Car> getAllByDriver(Long driverId) {
         List<Car> returnList = new ArrayList<>();
-        String getAllByDriver = "SELECT cd.\"car_Id\" as carId, cars.model,"
-                                + " cars.manufacturer as mfId, name, country"
-                                + " FROM cars_drivers cd"
-                                + " INNER JOIN cars ON cars.id = cd.\"car_Id\""
-                                + " INNER JOIN manufacturers"
-                                + " ON cars.manufacturer = manufacturers.id"
-                                + " WHERE cd.\"driver_Id\" = ? AND cars.deleted = false";
+        String getAllByDriver = "SELECT cars.id as car_id, cars.model as car_model, cars.manufacturer as manufacturer_id,"
+                                + " m.name as manufacturer_name, m.country as manufacturer_country, d.id as driver_id,"
+                                + " d.name as driver_name, d.licence_number as driver_licence"
+                                + " FROM cars"
+                                + " LEFT JOIN cars_drivers cd ON cd.\"car_Id\" = cars.id"
+                                + " LEFT JOIN drivers d on cd.\"driver_Id\" = d.id"
+                                + " LEFT JOIN manufacturers m ON m.id = cars.manufacturer"
+                                + " WHERE cars.deleted = false AND d.deleted = false"
+                                + " AND cars.id in (select \"car_Id\" FROM cars_drivers "
+                                + " WHERE \"driver_Id\" = ?)"
+                                + " ORDER BY cars.id";
         try (Connection connection = ConnectionUtils.getConnection();
                  PreparedStatement getAllStatement = connection.prepareStatement(getAllByDriver)) {
             getAllStatement.setLong(1, driverId);
             ResultSet resultSet = getAllStatement.executeQuery();
-            while (resultSet.next()) {
-                Car car = DaoUtils.parseToCar(resultSet);
-                car.setDriverList(getDrivers(car, connection));
-                returnList.add(car);
-            }
+            returnList = getListCarParser(resultSet);
         } catch (SQLException e) {
             throw new DataProcessingException(String
                     .format(GET_CARS_BY_DRIVER_EXCEPTION, driverId), e);
@@ -217,7 +217,7 @@ public class CarDaoJdbc implements CarDao {
     private Car getCarParser(ResultSet resultSet) throws SQLException {
         Long manufacturerID = resultSet.getObject("manufacturer_id", Long.class);
         String manufacturerName = resultSet.getObject("manufacturer_name", String.class);
-        String manufacturerCountry = resultSet.getObject("manufacturer_name", String.class);
+        String manufacturerCountry = resultSet.getObject("manufacturer_country", String.class);
         
         Long carID = resultSet.getObject("car_id", Long.class);
         String carModel = resultSet.getObject("car_model", String.class);
@@ -228,10 +228,10 @@ public class CarDaoJdbc implements CarDao {
         if (driver.getId() != null) {
             drivers.add(driver);
             while (resultSet.next()) {
-                drivers.add(DaoUtils.parseToDriver(resultSet));
                 if (resultSet.getObject("car_id", Long.class) != carID) {
                     break;
                 }
+                drivers.add(DaoUtils.parseToDriver(resultSet));
             }
         }
         car.setDriverList(drivers);

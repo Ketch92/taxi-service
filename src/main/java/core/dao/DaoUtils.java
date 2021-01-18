@@ -17,9 +17,9 @@ public class DaoUtils {
     }
     
     public static Manufacturer parseToManufacturer(ResultSet resultSet) throws SQLException {
-        Long id = resultSet.getObject("id", Long.class);
-        String name = resultSet.getObject("name", String.class);
-        String country = resultSet.getObject("country", String.class);
+        Long id = resultSet.getObject("manufacturer_id", Long.class);
+        String name = resultSet.getObject("manufacturer_name", String.class);
+        String country = resultSet.getObject("manufacturer_country", String.class);
         Manufacturer manufacturer = new Manufacturer(name, country);
         manufacturer.setId(id);
         return manufacturer;
@@ -28,10 +28,7 @@ public class DaoUtils {
     public static Car parseToCar(ResultSet resultSet) throws SQLException {
         Long carId = resultSet.getObject("carId", Long.class);
         String model = resultSet.getObject("model", String.class);
-        Long manufacturerId = resultSet.getObject("mfId", Long.class);
-        String mfName = resultSet.getObject("name", String.class);
-        String country = resultSet.getObject("country", String.class);
-        Car car = new Car(carId, model, new Manufacturer(manufacturerId, mfName, country));
+        Car car = new Car(carId, model, parseToManufacturer(resultSet));
         return car;
     }
 }
