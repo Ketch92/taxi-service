@@ -40,7 +40,8 @@ public class ManufacturerDaoJdbc implements ManufacturerDao {
     
     @Override
     public Optional<Manufacturer> get(Long id) {
-        String select = "SELECT id, name, country"
+        String select = "SELECT id as maufacturer_id, "
+                        + "name as manufacturer_name, country as manufacturer_country"
                         + " FROM manufacturers"
                         + " WHERE (id = ? AND deleted = false);";
         try (Connection connection = ConnectionUtils.getConnection();
@@ -60,7 +61,8 @@ public class ManufacturerDaoJdbc implements ManufacturerDao {
     
     @Override
     public List<Manufacturer> getAll() {
-        String select = "SELECT id, name, country"
+        String select = "SELECT id as manufacturer_id, "
+                        + "name as manufacturer_name, country as manufacturer_country"
                         + " FROM manufacturers"
                         + " WHERE deleted = false;";
         List<Manufacturer> resultList = new ArrayList<>();

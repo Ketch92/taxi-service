@@ -41,7 +41,7 @@ public class DriverDaoJdbc implements DriverDao {
     
     @Override
     public Optional<Driver> get(Long id) {
-        String select = "SELECT id, name, licence_number"
+        String select = "SELECT id as driver_id, name as driver_name, licence_number as driver_licence"
                         + " FROM drivers"
                         + " WHERE (id = ? AND deleted = false);";
         try (Connection connection = ConnectionUtils.getConnection();
@@ -60,7 +60,7 @@ public class DriverDaoJdbc implements DriverDao {
     
     @Override
     public List<Driver> getAll() {
-        String select = "SELECT id, name, licence_number"
+        String select = "SELECT id as driver_id, name as driver_name, licence_number as driver_licence"
                         + " FROM drivers"
                         + " WHERE deleted = false;";
         List<Driver> resultList = new ArrayList<>();
