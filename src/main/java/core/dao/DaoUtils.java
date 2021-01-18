@@ -34,7 +34,8 @@ public class DaoUtils {
     
         Long carID = resultSet.getObject("car_id", Long.class);
         String carModel = resultSet.getObject("car_model", String.class);
-        Car car = new Car(carID, carModel, new Manufacturer(manufacturerID, manufacturerName, manufacturerCountry));
+        Car car = new Car(carID, carModel,
+                new Manufacturer(manufacturerID, manufacturerName, manufacturerCountry));
     
         List<Driver> drivers = new ArrayList<>();
         Driver driver = DaoUtils.parseToDriver(resultSet);

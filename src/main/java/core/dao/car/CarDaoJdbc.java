@@ -54,9 +54,11 @@ public class CarDaoJdbc implements CarDao {
     
     @Override
     public Optional<Car> get(Long id) {
-        String select = "SELECT cars.id as car_id, cars.model as car_model, cars.manufacturer as manufacturer_id,"
-                        + " m.name as manufacturer_name, m.country as manufacturer_country, d.id as driver_id,"
-                        + " d.name as driver_name, d.licence_number as driver_licence"
+        String select = "SELECT cars.id as car_id, cars.model as car_model,"
+                        + " cars.manufacturer as manufacturer_id,"
+                        + " m.name as manufacturer_name, m.country as manufacturer_country,"
+                        + " d.id as driver_id, d.name as driver_name,"
+                        + " d.licence_number as driver_licence"
                         + " FROM cars"
                         + " LEFT JOIN manufacturers m ON m.id = cars.manufacturer"
                         + " LEFT JOIN cars_drivers cd ON cd.\"car_Id\" = cars.id"
@@ -82,9 +84,11 @@ public class CarDaoJdbc implements CarDao {
     @Override
     public List<Car> getAll() {
         List<Car> returnList = new ArrayList<>();
-        String getAll = "SELECT cars.id as car_id, cars.model as car_model, cars.manufacturer as manufacturer_id,"
-                        + " m.name as manufacturer_name, m.country as manufacturer_country, d.id as driver_id,"
-                        + " d.name as driver_name, d.licence_number as driver_licence"
+        String getAll = "SELECT cars.id as car_id, cars.model as car_model,"
+                        + " cars.manufacturer as manufacturer_id,"
+                        + " m.name as manufacturer_name, m.country as manufacturer_country,"
+                        + " d.id as driver_id, d.name as driver_name,"
+                        + " d.licence_number as driver_licence"
                         + " FROM cars"
                         + " JOIN manufacturers m ON m.id = cars.manufacturer"
                         + " JOIN cars_drivers cd ON cd.\"car_Id\" = cars.id"
@@ -143,9 +147,11 @@ public class CarDaoJdbc implements CarDao {
     @Override
     public List<Car> getAllByDriver(Long driverId) {
         List<Car> returnList = new ArrayList<>();
-        String getAllByDriver = "SELECT cars.id as car_id, cars.model as car_model, cars.manufacturer as manufacturer_id,"
-                                + " m.name as manufacturer_name, m.country as manufacturer_country, d.id as driver_id,"
-                                + " d.name as driver_name, d.licence_number as driver_licence"
+        String getAllByDriver = "SELECT cars.id as car_id, cars.model as car_model,"
+                                + " cars.manufacturer as manufacturer_id,"
+                                + " m.name as manufacturer_name, m.country as manufacturer_country,"
+                                + " d.id as driver_id, d.name as driver_name,"
+                                + " d.licence_number as driver_licence"
                                 + " FROM cars"
                                 + " LEFT JOIN cars_drivers cd ON cd.\"car_Id\" = cars.id"
                                 + " LEFT JOIN drivers d on cd.\"driver_Id\" = d.id"
