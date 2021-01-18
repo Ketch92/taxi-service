@@ -23,9 +23,9 @@ public class Main {
 //        driverService.getAll().forEach(System.out::println);
 //        carService.getAll().forEach(System.out::println);
         
-        manufacturerService.getAll().forEach(System.out::println);
+//        manufacturerService.getAll().forEach(System.out::println);
         
-//        carService.getAllByDriver(10L).forEach(System.out::println);
+        carService.getAllByDriver(10L).forEach(System.out::println);
 //        testDriverService(driverService);
 //        testManufacturerService(manufacturerService);
 //        testCarService(carService, manufacturerService.getAll(), driverService.getAll());

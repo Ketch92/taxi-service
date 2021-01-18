@@ -69,7 +69,7 @@ public class CarDaoJdbc implements CarDao {
             getByIdStatement.setLong(1, id);
             ResultSet resultSet = getByIdStatement.executeQuery();
             if (resultSet.next()) {
-                car = getCarParser(resultSet);
+                car = DaoUtils.parseToCar(resultSet);
             }
         } catch (SQLException e) {
             throw new DataProcessingException(String
@@ -158,7 +158,9 @@ public class CarDaoJdbc implements CarDao {
                  PreparedStatement getAllStatement = connection.prepareStatement(getAllByDriver)) {
             getAllStatement.setLong(1, driverId);
             ResultSet resultSet = getAllStatement.executeQuery();
-            returnList = getListCarParser(resultSet);
+            if (resultSet.next()) {
+                returnList = getListCarParser(resultSet);
+            }
         } catch (SQLException e) {
             throw new DataProcessingException(String
                     .format(GET_CARS_BY_DRIVER_EXCEPTION, driverId), e);
@@ -196,53 +198,11 @@ public class CarDaoJdbc implements CarDao {
         }
     }
     
-    private List<Driver> getDrivers(Car car, Connection connection) {
-        String select = "SELECT DISTINCT drivers.id, drivers.name, drivers.licence_number"
-                        + " FROM drivers"
-                        + " INNER JOIN cars_drivers cd ON drivers.id = cd.\"driver_Id\""
-                        + " WHERE deleted = false AND cd.\"car_Id\" = " + car.getId();
-        List<Driver> list = new ArrayList<>();
-        try (PreparedStatement selectDrivers = connection.prepareStatement(select)) {
-            ResultSet resultSet = selectDrivers.executeQuery();
-            while (resultSet.next()) {
-                list.add(DaoUtils.parseToDriver(resultSet));
-            }
-        } catch (SQLException e) {
-            throw new DataProcessingException(String
-                    .format(GET_DRIVERS_EXCEPTION, car.getId()), e);
-        }
-        return list;
-    }
-    
-    private Car getCarParser(ResultSet resultSet) throws SQLException {
-        Long manufacturerID = resultSet.getObject("manufacturer_id", Long.class);
-        String manufacturerName = resultSet.getObject("manufacturer_name", String.class);
-        String manufacturerCountry = resultSet.getObject("manufacturer_country", String.class);
-        
-        Long carID = resultSet.getObject("car_id", Long.class);
-        String carModel = resultSet.getObject("car_model", String.class);
-        Car car = new Car(carID, carModel, new Manufacturer(manufacturerID, manufacturerName, manufacturerCountry));
-        
-        List<Driver> drivers = new ArrayList<>();
-        Driver driver = DaoUtils.parseToDriver(resultSet);
-        if (driver.getId() != null) {
-            drivers.add(driver);
-            while (resultSet.next()) {
-                if (resultSet.getObject("car_id", Long.class) != carID) {
-                    break;
-                }
-                drivers.add(DaoUtils.parseToDriver(resultSet));
-            }
-        }
-        car.setDriverList(drivers);
-        return car;
-    }
-    
     private List<Car> getListCarParser(ResultSet resultSet) throws SQLException {
         List<Car> cars = new ArrayList<>();
-        cars.add(getCarParser(resultSet));
+        cars.add(DaoUtils.parseToCar(resultSet));
         while (resultSet.next()) {
-            cars.add(getCarParser(resultSet));
+            cars.add(DaoUtils.parseToCar(resultSet));
         }
         return cars;
     }
