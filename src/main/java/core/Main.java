@@ -21,8 +21,10 @@ public class Main {
         CarService carService = (CarService) injector.getInstance(CarService.class);
         DriverService driverService = (DriverService) injector.getInstance(DriverService.class);
     
-        carService.getAll().forEach(System.out::println);
-
+//        carService.getAll().forEach(System.out::println);
+        
+        Car car = carService.get(6L);
+        System.out.println(car);
 //        testDriverService(driverService);
 //        testManufacturerService(manufacturerService);
 //        testCarService(carService, manufacturerService.getAll(), driverService.getAll());

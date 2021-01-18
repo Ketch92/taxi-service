@@ -58,10 +58,11 @@ public class CarDaoJdbc implements CarDao {
                         + " m.name as manufacturer_name, m.country as manufacturer_country, d.id as driver_id,"
                         + " d.name as driver_name, d.licence_number as driver_licence"
                         + " FROM cars"
-                        + " JOIN manufacturers m ON m.id = cars.manufacturer"
-                        + " JOIN cars_drivers cd ON cd.\"car_Id\" = cars.id"
-                        + " JOIN drivers d on cd.\"driver_Id\" = d.id"
-                        + " WHERE cars.id = ? AND cars.deleted = false AND d.deleted = false;";
+                        + " LEFT JOIN manufacturers m ON m.id = cars.manufacturer"
+                        + " LEFT JOIN cars_drivers cd ON cd.\"car_Id\" = cars.id"
+                        + " LEFT JOIN drivers d on cd.\"driver_Id\" = d.id"
+                        + " WHERE cars.id = ? AND cars.deleted = false "
+                        + "AND (d.deleted = false OR d.deleted IS NULL)";
         Car car = null;
         try (Connection connection = ConnectionUtils.getConnection();
                 PreparedStatement getByIdStatement = connection.prepareStatement(select)) {
@@ -88,7 +89,8 @@ public class CarDaoJdbc implements CarDao {
                         + " JOIN manufacturers m ON m.id = cars.manufacturer"
                         + " JOIN cars_drivers cd ON cd.\"car_Id\" = cars.id"
                         + " JOIN drivers d on cd.\"driver_Id\" = d.id"
-                        + " WHERE cars.deleted = false AND d.deleted = false;";
+                        + " WHERE cars.deleted = false AND (d.deleted = false OR d.deleted IS NULL)"
+                        + " ORDER BY car_id";
         try (Connection connection = ConnectionUtils.getConnection();
                 PreparedStatement getAllStatement = connection.prepareStatement(getAll)) {
             ResultSet resultSet = getAllStatement.executeQuery();
@@ -222,14 +224,16 @@ public class CarDaoJdbc implements CarDao {
         Car car = new Car(carID, carModel, new Manufacturer(manufacturerID, manufacturerName, manufacturerCountry));
         
         List<Driver> drivers = new ArrayList<>();
-        drivers.add(DaoUtils.parseToDriver(resultSet));
-        while (resultSet.next()) {
-            drivers.add(DaoUtils.parseToDriver(resultSet));
-            if (resultSet.getObject("car_id", Long.class) != carID) {
-                break;
+        Driver driver = DaoUtils.parseToDriver(resultSet);
+        if (driver.getId() != null) {
+            drivers.add(driver);
+            while (resultSet.next()) {
+                drivers.add(DaoUtils.parseToDriver(resultSet));
+                if (resultSet.getObject("car_id", Long.class) != carID) {
+                    break;
+                }
             }
         }
-        
         car.setDriverList(drivers);
         return car;
     }
