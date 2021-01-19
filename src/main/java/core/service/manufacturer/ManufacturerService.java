@@ -13,6 +13,4 @@ public interface ManufacturerService {
     Manufacturer update(Manufacturer manufacturer);
     
     boolean delete(Long id);
-    
-    boolean delete(Manufacturer manufacturer);
 }

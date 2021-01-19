@@ -20,12 +20,12 @@ public class Main {
         
         CarService carService = (CarService) injector.getInstance(CarService.class);
         DriverService driverService = (DriverService) injector.getInstance(DriverService.class);
-        
-        testManufacturerService(manufacturerService);
+
         testDriverService(driverService);
+        testManufacturerService(manufacturerService);
         testCarService(carService, manufacturerService.getAll(), driverService.getAll());
     }
-    
+
     private static void testManufacturerService(ManufacturerService manufacturerService) {
         Manufacturer first = new Manufacturer("AMW", "Ukraine");
         Manufacturer second = new Manufacturer("BMW", "Ukraine");
@@ -41,8 +41,8 @@ public class Main {
         manufacturerService.getAll().forEach(System.out::println);
         System.out.println("printed all manufacturers\n");
         
-        System.out.println(manufacturerService.get(3L).toString());
-        System.out.println("it was the data of 3rd manufacturer");
+        System.out.println(manufacturerService.get(5L).toString());
+        System.out.println("it was the data of 5th manufacturer");
         
         Manufacturer updated = new Manufacturer("FGT", "Volyn");
         updated.setId(0L);
@@ -133,6 +133,6 @@ public class Main {
         System.out.println("\nNow we kill secondary hero");
         driverService.delete(theHeroWhoDiesFirst.getId());
         driverService.getAll().forEach(System.out::println);
-        System.out.println("as we can see " + theHeroWhoDiesFirst.toString() + "isn't in the list");
+        System.out.println("As we can see " + theHeroWhoDiesFirst.toString() + "isn't in the list");
     }
 }

@@ -1,10 +1,10 @@
-package core.dao.manufacturer;
+package core.dao.driver;
 
 import core.dao.DaoUtils;
 import core.lib.Dao;
 import core.model.DataProcessingException;
+import core.model.Driver;
 import core.model.ErrorMessages;
-import core.model.Manufacturer;
 import core.utils.ConnectionUtils;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,91 +16,90 @@ import java.util.List;
 import java.util.Optional;
 
 @Dao
-public class ManufacturerDaoJdbc implements ManufacturerDao {
+public class DriverDaoJdbc implements DriverDao {
     @Override
-    public Manufacturer add(Manufacturer manufacturer) {
-        String insert = "INSERT INTO manufacturers(name, country)"
+    public Driver add(Driver driver) {
+        String insert = "INSERT INTO drivers(name, licence_number)"
                         + " VALUES(?, ?);";
         try (Connection con = ConnectionUtils.getConnection();
                 PreparedStatement insertStatement = con.prepareStatement(insert,
-                         Statement.RETURN_GENERATED_KEYS)) {
-            insertStatement.setString(1, manufacturer.getName());
-            insertStatement.setString(2, manufacturer.getCountry());
+                            Statement.RETURN_GENERATED_KEYS)) {
+            insertStatement.setString(1, driver.getName());
+            insertStatement.setString(2, driver.getLicenceNumber());
             insertStatement.executeUpdate();
             ResultSet resultSet = insertStatement.getGeneratedKeys();
             if (resultSet.next()) {
-                manufacturer.setId(resultSet.getObject("id", Long.class));
+                driver.setId(resultSet.getObject("id", Long.class));
             }
         } catch (SQLException e) {
             throw new DataProcessingException(String
-                    .format(ErrorMessages.ADD.getMessage(), manufacturer), e);
+                    .format(ErrorMessages.ADD.getMessage(),
+                            Driver.class.getSimpleName(), driver), e);
         }
-        return manufacturer;
+        return driver;
     }
     
     @Override
-    public Optional<Manufacturer> get(Long id) {
-        String select = "SELECT id as maufacturer_id, "
-                        + "name as manufacturer_name, country as manufacturer_country"
-                        + " FROM manufacturers"
+    public Optional<Driver> get(Long id) {
+        String select = "SELECT id as driver_id, name as driver_name,"
+                        + " licence_number as driver_licence"
+                        + " FROM drivers"
                         + " WHERE (id = ? AND deleted = false);";
         try (Connection connection = ConnectionUtils.getConnection();
                 PreparedStatement getByIdStatement = connection.prepareStatement(select)) {
             getByIdStatement.setLong(1, id);
             ResultSet resultSet = getByIdStatement.executeQuery();
             if (resultSet.next()) {
-                return Optional.of(DaoUtils.parseToManufacturer(resultSet));
+                return Optional.of(DaoUtils.parseToDriver(resultSet));
             }
             return Optional.empty();
         } catch (SQLException e) {
             throw new DataProcessingException(String
-                    .format(ErrorMessages.GET.getMessage(),
-                            Manufacturer.class.getSimpleName(), id), e);
+                    .format(ErrorMessages.GET.getMessage(), Driver.class.getSimpleName(), id), e);
         }
     }
     
     @Override
-    public List<Manufacturer> getAll() {
-        String select = "SELECT id as manufacturer_id, "
-                        + "name as manufacturer_name, country as manufacturer_country"
-                        + " FROM manufacturers"
+    public List<Driver> getAll() {
+        String select = "SELECT id as driver_id, name as driver_name,"
+                        + " licence_number as driver_licence"
+                        + " FROM drivers"
                         + " WHERE deleted = false;";
-        List<Manufacturer> resultList = new ArrayList<>();
+        List<Driver> resultList = new ArrayList<>();
         try (Connection con = ConnectionUtils.getConnection();
-                PreparedStatement getAllStatement = con.prepareStatement(select)) {
+                 PreparedStatement getAllStatement = con.prepareStatement(select)) {
             ResultSet resultSet = getAllStatement.executeQuery();
             while (resultSet.next()) {
-                resultList.add(DaoUtils.parseToManufacturer(resultSet));
+                resultList.add(DaoUtils.parseToDriver(resultSet));
             }
             return resultList;
         } catch (SQLException e) {
             throw new DataProcessingException(String
                     .format(ErrorMessages.GET_ALL.getMessage(),
-                            Manufacturer.class.getSimpleName()), e);
+                    Driver.class.getSimpleName()), e);
         }
     }
     
     @Override
-    public Manufacturer update(Manufacturer manufacturer) {
-        String update = "UPDATE manufacturers SET name = ?,"
-                        + " country = ? WHERE id = ? AND deleted = false";
+    public Driver update(Driver driver) {
+        String update = "UPDATE drivers SET name = ?,"
+                        + " licence_number = ? WHERE id = ? AND deleted = false";
         try (Connection con = ConnectionUtils.getConnection();
                  PreparedStatement updateStatement = con.prepareStatement(update)) {
-            updateStatement.setString(1, manufacturer.getName());
-            updateStatement.setString(2, manufacturer.getCountry());
-            updateStatement.setLong(3, manufacturer.getId());
+            updateStatement.setString(1, driver.getName());
+            updateStatement.setString(2, driver.getLicenceNumber());
+            updateStatement.setLong(3, driver.getId());
             updateStatement.executeUpdate();
         } catch (SQLException exception) {
-            throw new DataProcessingException(String
-                    .format(ErrorMessages.UPDATE.getMessage(),
-                            manufacturer), exception);
+            throw new DataProcessingException(String.format(ErrorMessages.UPDATE.getMessage(),
+                    driver), exception);
         }
-        return manufacturer;
+        return driver;
     }
     
     @Override
     public boolean delete(Long id) {
-        String delete = "UPDATE manufacturers SET deleted = true WHERE id = ?";
+        String delete = "UPDATE drivers SET deleted = true WHERE id = ?";
         int updated;
         try (Connection con = ConnectionUtils.getConnection();
                  PreparedStatement deleteStatement = con.prepareStatement(delete)) {
@@ -109,7 +108,7 @@ public class ManufacturerDaoJdbc implements ManufacturerDao {
         } catch (SQLException e) {
             throw new DataProcessingException(String
                     .format(ErrorMessages.DELETE.getMessage(),
-                            Manufacturer.class.getSimpleName(), id), e);
+                            Driver.class.getSimpleName(), id), e);
         }
         return updated > 0;
     }
