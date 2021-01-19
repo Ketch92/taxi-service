@@ -23,8 +23,6 @@ public class CarDaoJdbc implements CarDao {
             "An error occurred while adding driver with id = %d";
     private static final String REMOVE_DRIVER_EXCEPTION =
             "An error occurred removing drivers for car with id = %d";
-    private static final String GET_DRIVERS_EXCEPTION =
-            "An error has occurred while retrieving data for car id %d";
     private static final String GET_CARS_BY_DRIVER_EXCEPTION =
             "An error has occurred while retrieving data for driver id %d";
     
@@ -193,8 +191,7 @@ public class CarDaoJdbc implements CarDao {
     }
     
     private void removeDrivers(Car car, Connection connection) {
-        String remove = "DELETE FROM cars_drivers WHERE \"car_Id\" = " + car.getId()
-                + " AND EXISTS(SELECT id WHERE \"car_Id\" = ?)";
+        String remove = "DELETE FROM cars_drivers WHERE \"car_Id\" = " + car.getId();
         try (PreparedStatement removeStatement = connection.prepareStatement(remove)) {
             removeStatement.setLong(1, car.getId());
             removeStatement.executeUpdate();
