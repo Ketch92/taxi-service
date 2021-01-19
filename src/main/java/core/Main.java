@@ -42,7 +42,7 @@ public class Main {
         System.out.println("printed all manufacturers\n");
         
         System.out.println(manufacturerService.get(5L).toString());
-        System.out.println("it was the data of 3rd manufacturer");
+        System.out.println("it was the data of 5th manufacturer");
         
         Manufacturer updated = new Manufacturer("FGT", "Volyn");
         updated.setId(0L);
