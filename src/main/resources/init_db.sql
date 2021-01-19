@@ -64,8 +64,8 @@ ALTER TABLE public.cars OWNER TO postgres;
 --
 
 CREATE TABLE public.cars_drivers (
-                                     "car_Id" bigint NOT NULL,
-                                     "driver_Id" bigint NOT NULL
+                                     car_id bigint NOT NULL,
+                                     driver_id bigint NOT NULL
 );
 
 
@@ -81,16 +81,6 @@ CREATE SEQUENCE public.cars_drivers_id_seq
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
-
-
-ALTER TABLE public.cars_drivers_id_seq OWNER TO postgres;
-
---
--- Name: cars_drivers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE public.cars_drivers_id_seq OWNED BY public.cars_drivers.id;
-
 
 --
 -- Name: cars_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -191,13 +181,6 @@ ALTER TABLE ONLY public.cars ALTER COLUMN id SET DEFAULT nextval('public.cars_id
 
 
 --
--- Name: cars_drivers id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.cars_drivers ALTER COLUMN id SET DEFAULT nextval('public.cars_drivers_id_seq'::regclass);
-
-
---
 -- Name: drivers id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -223,7 +206,7 @@ COPY public.cars (id, model, manufacturer, deleted) FROM stdin;
 -- Data for Name: cars_drivers; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.cars_drivers (id, "car_Id", "driver_Id") FROM stdin;
+COPY public.cars_drivers (car_id, driver_id) FROM stdin;
 \.
 
 
@@ -241,13 +224,6 @@ COPY public.drivers (id, name, licence_number, deleted) FROM stdin;
 
 COPY public.manufacturers (id, name, country, deleted) FROM stdin;
 \.
-
-
---
--- Name: cars_drivers_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public.cars_drivers_id_seq', 1, false);
 
 
 --
@@ -269,14 +245,6 @@ SELECT pg_catalog.setval('public.drivers_id_seq', 1, false);
 --
 
 SELECT pg_catalog.setval('public.manufacturers_id_seq', 17, true);
-
-
---
--- Name: cars_drivers cars_drivers_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.cars_drivers
-    ADD CONSTRAINT cars_drivers_pk PRIMARY KEY (id);
 
 
 --
@@ -308,7 +276,7 @@ ALTER TABLE ONLY public.manufacturers
 --
 
 ALTER TABLE ONLY public.cars_drivers
-    ADD CONSTRAINT cars_drivers__cars_cfk FOREIGN KEY ("car_Id") REFERENCES public.cars(id);
+    ADD CONSTRAINT cars_drivers__cars_cfk FOREIGN KEY (car_id) REFERENCES public.cars(id);
 
 
 --
@@ -316,7 +284,7 @@ ALTER TABLE ONLY public.cars_drivers
 --
 
 ALTER TABLE ONLY public.cars_drivers
-    ADD CONSTRAINT cars_drivers__drivers_fk FOREIGN KEY ("driver_Id") REFERENCES public.drivers(id);
+    ADD CONSTRAINT cars_drivers__drivers_fk FOREIGN KEY (driver_id) REFERENCES public.drivers(id);
 
 
 --
