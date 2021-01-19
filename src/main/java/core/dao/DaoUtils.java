@@ -28,9 +28,9 @@ public class DaoUtils {
     }
     
     public static Car parseToCar(ResultSet resultSet) throws SQLException {
-        Long carID = resultSet.getObject("car_id", Long.class);
+        Long carId = resultSet.getObject("car_id", Long.class);
         String carModel = resultSet.getObject("car_model", String.class);
-        Car car = new Car(carID, carModel,
+        Car car = new Car(carId, carModel,
                 parseToManufacturer(resultSet));
     
         List<Driver> drivers = new ArrayList<>();
@@ -38,7 +38,7 @@ public class DaoUtils {
         if (driver.getId() != null) {
             drivers.add(driver);
             while (resultSet.next()) {
-                if (resultSet.getObject("car_id", Long.class) != carID) {
+                if (resultSet.getObject("car_id", Long.class) != carId) {
                     break;
                 }
                 drivers.add(DaoUtils.parseToDriver(resultSet));
