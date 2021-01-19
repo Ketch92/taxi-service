@@ -28,14 +28,10 @@ public class DaoUtils {
     }
     
     public static Car parseToCar(ResultSet resultSet) throws SQLException {
-        Long manufacturerID = resultSet.getObject("manufacturer_id", Long.class);
-        String manufacturerName = resultSet.getObject("manufacturer_name", String.class);
-        String manufacturerCountry = resultSet.getObject("manufacturer_country", String.class);
-    
         Long carID = resultSet.getObject("car_id", Long.class);
         String carModel = resultSet.getObject("car_model", String.class);
         Car car = new Car(carID, carModel,
-                new Manufacturer(manufacturerID, manufacturerName, manufacturerCountry));
+                parseToManufacturer(resultSet));
     
         List<Driver> drivers = new ArrayList<>();
         Driver driver = DaoUtils.parseToDriver(resultSet);
