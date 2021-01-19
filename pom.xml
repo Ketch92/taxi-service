@@ -73,7 +73,7 @@
                     <artifactId>maven-war-plugin</artifactId>
                     <version>3.3.1</version>
                     <configuration>
-                        <webappDirectory>src/main/webapp/web.xml</webappDirectory>
+                        <webXml>src/main/webapp/web.xml</webXml>
                     </configuration>
                 </plugin>
             </plugins>
