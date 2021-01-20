@@ -6,6 +6,15 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class ConnectionUtils {
+    
+    static {
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Can't find SQL Driver", e);
+        }
+    }
+    
     public static Connection getConnection() {
         Properties dbProperties = new Properties();
         String user = "postgres";
