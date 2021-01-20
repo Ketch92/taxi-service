@@ -2,9 +2,10 @@ package core.service.car;
 
 import core.model.Car;
 import core.model.Driver;
+import core.service.Service;
 import java.util.List;
 
-public interface CarService {
+public interface CarService extends Service<Car, Long> {
     Car add(Car car);
     
     Car get(Long id);
