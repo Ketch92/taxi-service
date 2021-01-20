@@ -1,4 +1,3 @@
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -9,7 +8,7 @@
 
 <h4 style="color: red">${errorMessage}</h4>
 
-<form method="post" action=${pageContext.request.contextPath}"/car/add/driver">
+<form method="post" action="${pageContext.request.contextPath}/car/add/driver">
     Car's id <input type="number" name="carId">
     Driver id <input type="number" name="driverId">
     <button type="submit">Send</button>

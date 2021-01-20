@@ -1,4 +1,3 @@
-
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -24,6 +23,9 @@
             </td>
             <td>
                 <c:out value="${driver.licenceNumber}"/>
+            </td>
+            <td>
+                <a href="${pageContext.request.contextPath}/driver/delete?id=${driver.id}">Delete</a>
             </td>
         </tr>
     </c:forEach>
