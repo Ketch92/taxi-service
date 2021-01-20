@@ -1,4 +1,4 @@
-package core.controller.driver;
+package core.controller.drivers;
 
 import core.Main;
 import core.lib.Injector;
@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class GetAllDriversController extends HttpServlet {
     private static final Injector injector
-            = Injector.getInstance(Main.class.getPackageName());
+            = Injector.getInstance("core");
     private DriverService driverService
             = (DriverService) injector.getInstance(DriverService.class);
     

@@ -7,10 +7,17 @@
 <h1>Taxi service</h1>
 
 <p>
-    <a href=${pageContext.request.contextPath}"/add/driver">Add driver</a>
+    <a href=${pageContext.request.contextPath}"/driver/add">Add driver</a>
 </p>
 <p>
-    <a href=${pageContext.request.contextPath}"/all/driver">All drivers</a>
+    <a href=${pageContext.request.contextPath}"/driver/all">All drivers</a>
 </p>
+<p>
+    <a href=${pageContext.request.contextPath}"/manufacturer/add">Add manufacturer</a>
+</p>
+<p>
+    <a href=${pageContext.request.contextPath}"/manufacturer/all">All manufacturers</a>
+</p>
+
 </body>
 </html>

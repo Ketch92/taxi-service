@@ -15,21 +15,41 @@
 
     <servlet>
         <servlet-name>addDriver</servlet-name>
-        <servlet-class>core.controller.driver.AddDriverController</servlet-class>
+        <servlet-class>core.controller.drivers.AddDriverController</servlet-class>
     </servlet>
 
     <servlet-mapping>
         <servlet-name>addDriver</servlet-name>
-        <url-pattern>/add/driver</url-pattern>
+        <url-pattern>/driver/add</url-pattern>
     </servlet-mapping>
 
     <servlet>
         <servlet-name>getAllDrivers</servlet-name>
-        <servlet-class>core.controller.driver.GetAllDriversController</servlet-class>
+        <servlet-class>core.controller.drivers.GetAllDriversController</servlet-class>
     </servlet>
 
     <servlet-mapping>
         <servlet-name>getAllDrivers</servlet-name>
-        <url-pattern>/all/driver</url-pattern>
+        <url-pattern>/driver/all</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>getAllManufacturers</servlet-name>
+        <servlet-class>core.controller.manufacturers.GetAllManufacturersController</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>getAllManufacturers</servlet-name>
+        <url-pattern>/manufacturer/all</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>addManufacturer</servlet-name>
+        <servlet-class>core.controller.manufacturers.AddManufacturerController</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>addManufacturer</servlet-name>
+        <url-pattern>/manufacturer/add</url-pattern>
     </servlet-mapping>
 </web-app>
