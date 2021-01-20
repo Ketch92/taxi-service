@@ -52,4 +52,34 @@
         <servlet-name>addManufacturer</servlet-name>
         <url-pattern>/manufacturer/add</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>addCar</servlet-name>
+        <servlet-class>core.controller.cars.AddCarController</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>addCar</servlet-name>
+        <url-pattern>/car/add</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>getAllCars</servlet-name>
+        <servlet-class>core.controller.cars.GetAllCarsController</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>getAllCars</servlet-name>
+        <url-pattern>/cars/all</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>addDriverToCar</servlet-name>
+        <servlet-class>core.controller.cars.AddDriverToCarController</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>addDriverToCar</servlet-name>
+        <url-pattern>/car/add/driver</url-pattern>
+    </servlet-mapping>
 </web-app>
