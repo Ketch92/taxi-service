@@ -34,16 +34,18 @@ public class DaoUtils {
                 parseToManufacturer(resultSet));
     
         List<Driver> drivers = new ArrayList<>();
-        Driver driver = DaoUtils.parseToDriver(resultSet);
-        if (driver.getId() != null) {
-            drivers.add(driver);
-            while (resultSet.next()) {
-                if (resultSet.getObject("car_id", Long.class) != carId) {
-                    break;
-                }
-                drivers.add(DaoUtils.parseToDriver(resultSet));
+        resultSet.previous();
+        while (resultSet.next()) {
+            if (!resultSet.getObject("car_id", Long.class).equals(carId)) {
+                resultSet.previous();
+                break;
+            }
+            Driver driver = DaoUtils.parseToDriver(resultSet);
+            if (driver.getId() != null) {
+                drivers.add(driver);
             }
         }
+        
         car.setDriverList(drivers);
         return car;
     }

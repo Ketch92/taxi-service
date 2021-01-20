@@ -61,12 +61,14 @@ public class CarDaoJdbc implements CarDao {
                         + " FROM cars"
                         + " LEFT JOIN manufacturers m ON m.id = cars.manufacturer"
                         + " LEFT JOIN cars_drivers cd ON cd.car_id = cars.id"
-                        + " LEFT JOIN drivers d on cd.driver_id = d.id"
+                        + " LEFT JOIN drivers d ON cd.driver_id = d.id"
                         + " WHERE cars.id = ? AND cars.deleted = false "
-                        + "AND (d.deleted = false OR d.deleted IS NULL)";
+                        + "AND (d.deleted = false OR d IS NULL)";
         Car car = null;
         try (Connection connection = ConnectionUtils.getConnection();
-                PreparedStatement getByIdStatement = connection.prepareStatement(select)) {
+                PreparedStatement getByIdStatement = connection.prepareStatement(select,
+                        ResultSet.TYPE_SCROLL_SENSITIVE,
+                        ResultSet.CONCUR_READ_ONLY)) {
             getByIdStatement.setLong(1, id);
             ResultSet resultSet = getByIdStatement.executeQuery();
             if (resultSet.next()) {
@@ -89,13 +91,15 @@ public class CarDaoJdbc implements CarDao {
                         + " d.id as driver_id, d.name as driver_name,"
                         + " d.licence_number as driver_licence"
                         + " FROM cars"
-                        + " JOIN manufacturers m ON m.id = cars.manufacturer"
-                        + " JOIN cars_drivers cd ON cd.car_id = cars.id"
-                        + " JOIN drivers d on cd.driver_id = d.id"
-                        + " WHERE cars.deleted = false AND (d.deleted = false OR d.deleted IS NULL)"
+                        + " FULL JOIN manufacturers m ON m.id = cars.manufacturer"
+                        + " FULL JOIN cars_drivers cd ON cd.car_id = cars.id"
+                        + " FULL JOIN drivers d ON cd.driver_id = d.id"
+                        + " WHERE cars.deleted = false AND (d.deleted = false OR d IS NULL)"
                         + " ORDER BY car_id";
         try (Connection connection = ConnectionUtils.getConnection();
-                PreparedStatement getAllStatement = connection.prepareStatement(getAll)) {
+                PreparedStatement getAllStatement = connection.prepareStatement(getAll,
+                     ResultSet.TYPE_SCROLL_SENSITIVE,
+                     ResultSet.CONCUR_READ_ONLY)) {
             ResultSet resultSet = getAllStatement.executeQuery();
             if (resultSet.next()) {
                 returnList = getListCarParser(resultSet);
@@ -161,7 +165,9 @@ public class CarDaoJdbc implements CarDao {
                                 + " WHERE driver_id = ?)"
                                 + " ORDER BY cars.id";
         try (Connection connection = ConnectionUtils.getConnection();
-                 PreparedStatement getAllStatement = connection.prepareStatement(getAllByDriver)) {
+                 PreparedStatement getAllStatement = connection.prepareStatement(getAllByDriver,
+                         ResultSet.TYPE_SCROLL_SENSITIVE,
+                         ResultSet.CONCUR_READ_ONLY)) {
             getAllStatement.setLong(1, driverId);
             ResultSet resultSet = getAllStatement.executeQuery();
             if (resultSet.next()) {
