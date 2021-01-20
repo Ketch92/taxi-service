@@ -17,12 +17,14 @@ public class AddDriverController extends HttpServlet {
             = (DriverService) injector.getInstance(DriverService.class);
     
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
         req.getRequestDispatcher("/WEB-INF/views/add_driver.jsp").forward(req, resp);
     }
     
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
         String driverName = req.getParameter("driverName");
         String driverLicence = req.getParameter("driverLicence");
         driverService.add(new Driver(driverName, driverLicence));
