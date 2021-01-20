@@ -47,7 +47,7 @@ public class AddDriverToCarController extends HttpServlet {
     private void errorInput(HttpServletRequest req, HttpServletResponse resp, String message)
             throws ServletException, IOException {
         req.setAttribute("errorMessage", message);
-        req.getRequestDispatcher("/WEB-INF/views/cars/add_driver_to_car.jsp")
+        req.getRequestDispatcher("/WEB-INF/views/car/add_driver_to_car.jsp")
                 .forward(req, resp);
     }
 }
