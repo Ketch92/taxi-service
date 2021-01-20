@@ -32,6 +32,9 @@
             <td>
                 <c:out value="${car.manufacturer.country}"/>
             </td>
+            <td>
+                <a href=""
+            </td>
         </tr>
     </c:forEach>
 </table>

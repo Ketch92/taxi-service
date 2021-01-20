@@ -25,6 +25,16 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>deleteDriver</servlet-name>
+        <servlet-class>core.controller.driver.DeleteDriverController</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>deleteDriver</servlet-name>
+        <url-pattern>/driver/delete</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>getAllDrivers</servlet-name>
         <servlet-class>core.controller.driver.GetAllDriversController</servlet-class>
     </servlet>
@@ -71,7 +81,7 @@
 
     <servlet-mapping>
         <servlet-name>getAllCars</servlet-name>
-        <url-pattern>/cars/all</url-pattern>
+        <url-pattern>/car/all</url-pattern>
     </servlet-mapping>
 
     <servlet>
