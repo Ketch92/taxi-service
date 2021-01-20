@@ -98,8 +98,8 @@ public class CarDaoJdbc implements CarDao {
                         + " ORDER BY car_id";
         try (Connection connection = ConnectionUtils.getConnection();
                 PreparedStatement getAllStatement = connection.prepareStatement(getAll,
-                     ResultSet.TYPE_SCROLL_SENSITIVE,
-                     ResultSet.CONCUR_READ_ONLY)) {
+                        ResultSet.TYPE_SCROLL_SENSITIVE,
+                        ResultSet.CONCUR_READ_ONLY)) {
             ResultSet resultSet = getAllStatement.executeQuery();
             if (resultSet.next()) {
                 returnList = getListCarParser(resultSet);

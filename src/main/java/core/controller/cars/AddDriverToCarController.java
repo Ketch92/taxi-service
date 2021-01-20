@@ -1,7 +1,6 @@
 package core.controller.cars;
 
 import core.lib.Injector;
-import core.model.Driver;
 import core.service.car.CarService;
 import core.service.driver.DriverService;
 import java.io.IOException;

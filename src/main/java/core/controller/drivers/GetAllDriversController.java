@@ -1,6 +1,5 @@
 package core.controller.drivers;
 
-import core.Main;
 import core.lib.Injector;
 import core.model.Driver;
 import core.service.driver.DriverService;
