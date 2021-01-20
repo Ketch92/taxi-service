@@ -11,5 +11,8 @@
     Driver's licence number <input type="text" name="driverLicence">
     <button type="submit">Send</button>
 </form>
+<p>
+    <a href=${pageContext.request.contextPath}"/">Return to main page</a>
+</p>
 </body>
 </html>

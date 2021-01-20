@@ -11,5 +11,8 @@
     Manufacturer's country <input type="text" name="country">
     <button type="submit">Send</button>
 </form>
+<p>
+    <a href=${pageContext.request.contextPath}"/">Return to main page</a>
+</p>
 </body>
 </html>
