@@ -6,6 +6,11 @@
 <body>
 <h1>Taxi service</h1>
 
-<a href=${pageContext.request.contextPath}"/add/driver">Add driver</a>
+<p>
+    <a href=${pageContext.request.contextPath}"/add/driver">Add driver</a>
+</p>
+<p>
+    <a href=${pageContext.request.contextPath}"/all/driver">All drivers</a>
+</p>
 </body>
 </html>

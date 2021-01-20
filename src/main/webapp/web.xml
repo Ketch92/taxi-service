@@ -15,11 +15,21 @@
 
     <servlet>
         <servlet-name>addDriver</servlet-name>
-        <servlet-class>core.controller.AddDriverController</servlet-class>
+        <servlet-class>core.controller.driver.AddDriverController</servlet-class>
     </servlet>
 
     <servlet-mapping>
         <servlet-name>addDriver</servlet-name>
         <url-pattern>/add/driver</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>getAllDrivers</servlet-name>
+        <servlet-class>core.controller.driver.GetAllDriversController</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>getAllDrivers</servlet-name>
+        <url-pattern>/all/driver</url-pattern>
     </servlet-mapping>
 </web-app>
