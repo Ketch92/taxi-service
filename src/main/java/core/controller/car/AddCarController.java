@@ -1,4 +1,4 @@
-package core.controller.cars;
+package core.controller.car;
 
 import core.lib.Injector;
 import core.model.Car;
@@ -14,14 +14,14 @@ import javax.servlet.http.HttpServletResponse;
 public class AddCarController extends HttpServlet {
     private static final Injector injector
             = Injector.getInstance("core");
-    private CarService carService = (CarService) injector.getInstance(CarService.class);
-    private ManufacturerService manufacturerService
+    private final CarService carService = (CarService) injector.getInstance(CarService.class);
+    private final ManufacturerService manufacturerService
             = (ManufacturerService) injector.getInstance(ManufacturerService.class);
     
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        req.getRequestDispatcher("/WEB-INF/views/cars/add.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/views/car/add.jsp").forward(req, resp);
     }
     
     @Override
