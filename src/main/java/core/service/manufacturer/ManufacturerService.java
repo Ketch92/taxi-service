@@ -1,9 +1,10 @@
 package core.service.manufacturer;
 
 import core.model.Manufacturer;
+import core.service.Service;
 import java.util.List;
 
-public interface ManufacturerService {
+public interface ManufacturerService extends Service<Manufacturer, Long> {
     Manufacturer add(Manufacturer manufacturer);
     
     Manufacturer get(Long id);
