@@ -1,4 +1,4 @@
-package core.controller.drivers;
+package core.controller.driver;
 
 import core.lib.Injector;
 import core.model.Driver;
@@ -12,13 +12,13 @@ import javax.servlet.http.HttpServletResponse;
 public class AddDriverController extends HttpServlet {
     private static final Injector injector
             = Injector.getInstance("core");
-    private DriverService driverService
+    private final DriverService driverService
             = (DriverService) injector.getInstance(DriverService.class);
     
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        req.getRequestDispatcher("/WEB-INF/views/drivers/add.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/views/driver/add.jsp").forward(req, resp);
     }
     
     @Override

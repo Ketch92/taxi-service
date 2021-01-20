@@ -1,4 +1,4 @@
-package core.controller.manufacturers;
+package core.controller.manufacturer;
 
 import core.lib.Injector;
 import core.model.Manufacturer;
@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class GetAllManufacturersController extends HttpServlet {
     private static final Injector injector = Injector.getInstance("core");
-    private ManufacturerService manufacturerService
+    private final ManufacturerService manufacturerService
             = (ManufacturerService) injector.getInstance(ManufacturerService.class);
     
     @Override
@@ -20,6 +20,6 @@ public class GetAllManufacturersController extends HttpServlet {
             throws ServletException, IOException {
         List<Manufacturer> manufacturers = manufacturerService.getAll();
         req.setAttribute("manufacturers", manufacturers);
-        req.getRequestDispatcher("/WEB-INF/views/manufacturers/get_all.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/views/manufacturer/get_all.jsp").forward(req, resp);
     }
 }

@@ -3,6 +3,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
          version="3.0">
+
     <servlet>
         <servlet-name>taxi-service</servlet-name>
         <servlet-class>core.controller.IndexController</servlet-class>
@@ -15,7 +16,7 @@
 
     <servlet>
         <servlet-name>addDriver</servlet-name>
-        <servlet-class>core.controller.drivers.AddDriverController</servlet-class>
+        <servlet-class>core.controller.driver.AddDriverController</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -25,7 +26,7 @@
 
     <servlet>
         <servlet-name>getAllDrivers</servlet-name>
-        <servlet-class>core.controller.drivers.GetAllDriversController</servlet-class>
+        <servlet-class>core.controller.driver.GetAllDriversController</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -35,7 +36,7 @@
 
     <servlet>
         <servlet-name>getAllManufacturers</servlet-name>
-        <servlet-class>core.controller.manufacturers.GetAllManufacturersController</servlet-class>
+        <servlet-class>core.controller.manufacturer.GetAllManufacturersController</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -45,7 +46,7 @@
 
     <servlet>
         <servlet-name>addManufacturer</servlet-name>
-        <servlet-class>core.controller.manufacturers.AddManufacturerController</servlet-class>
+        <servlet-class>core.controller.manufacturer.AddManufacturerController</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -55,7 +56,7 @@
 
     <servlet>
         <servlet-name>addCar</servlet-name>
-        <servlet-class>core.controller.cars.AddCarController</servlet-class>
+        <servlet-class>core.controller.car.AddCarController</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -65,7 +66,7 @@
 
     <servlet>
         <servlet-name>getAllCars</servlet-name>
-        <servlet-class>core.controller.cars.GetAllCarsController</servlet-class>
+        <servlet-class>core.controller.car.GetAllCarsController</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -75,7 +76,7 @@
 
     <servlet>
         <servlet-name>addDriverToCar</servlet-name>
-        <servlet-class>core.controller.cars.AddDriverToCarController</servlet-class>
+        <servlet-class>core.controller.car.AddDriverToCarController</servlet-class>
     </servlet>
 
     <servlet-mapping>

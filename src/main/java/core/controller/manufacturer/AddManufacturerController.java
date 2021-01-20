@@ -1,4 +1,4 @@
-package core.controller.manufacturers;
+package core.controller.manufacturer;
 
 import core.Main;
 import core.lib.Injector;
@@ -12,13 +12,13 @@ import javax.servlet.http.HttpServletResponse;
 
 public class AddManufacturerController extends HttpServlet {
     private static final Injector injector = Injector.getInstance(Main.class.getPackageName());
-    private ManufacturerService manufacturerService
+    private final ManufacturerService manufacturerService
             = (ManufacturerService) injector.getInstance(ManufacturerService.class);
     
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        req.getRequestDispatcher("/WEB-INF/views/manufacturers/add.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/views/manufacturer/add.jsp").forward(req, resp);
     }
     
     @Override

@@ -1,4 +1,4 @@
-package core.controller.cars;
+package core.controller.car;
 
 import core.lib.Injector;
 import core.model.Car;
@@ -13,13 +13,13 @@ import javax.servlet.http.HttpServletResponse;
 public class GetAllCarsController extends HttpServlet {
     private static final Injector injector
             = Injector.getInstance("core");
-    private CarService carService = (CarService) injector.getInstance(CarService.class);
+    private final CarService carService = (CarService) injector.getInstance(CarService.class);
     
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         List<Car> cars = carService.getAll();
         req.setAttribute("cars", cars);
-        req.getRequestDispatcher("/WEB-INF/views/cars/get_all.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/views/car/get_all.jsp").forward(req, resp);
     }
 }

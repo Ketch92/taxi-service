@@ -1,4 +1,4 @@
-package core.controller.drivers;
+package core.controller.driver;
 
 import core.lib.Injector;
 import core.model.Driver;
@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 public class GetAllDriversController extends HttpServlet {
     private static final Injector injector
             = Injector.getInstance("core");
-    private DriverService driverService
+    private final DriverService driverService
             = (DriverService) injector.getInstance(DriverService.class);
     
     @Override
@@ -22,6 +22,6 @@ public class GetAllDriversController extends HttpServlet {
         List<Driver> drivers = driverService.getAll();
         
         req.setAttribute("drivers", drivers);
-        req.getRequestDispatcher("/WEB-INF/views/drivers/get_all.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/views/driver/get_all.jsp").forward(req, resp);
     }
 }
