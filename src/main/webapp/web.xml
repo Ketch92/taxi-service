@@ -94,4 +94,14 @@
         <url-pattern>/car/add/driver</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>showCarDrivers</servlet-name>
+        <servlet-class>core.controller.car.GetDriversOfCarController</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>showCarDrivers</servlet-name>
+        <url-pattern>/car/drivers</url-pattern>
+    </servlet-mapping>
+
 </web-app>

@@ -14,6 +14,7 @@
         <th>Manufacturer id</th>
         <th>Manufacturer name</th>
         <th>Manufacturer country</th>
+        <th>Drivers</th>
     </tr>
     <c:forEach var="car" items="${cars}">
         <tr>
@@ -33,13 +34,13 @@
                 <c:out value="${car.manufacturer.country}"/>
             </td>
             <td>
-                <a href=""
+                <a href="${pageContext.request.contextPath}/car/drivers?id=${car.id}">Drivers</a>
             </td>
         </tr>
     </c:forEach>
 </table>
 <p>
-    <a href=${pageContext.request.contextPath}"/">Return to main page</a>
+    <a href="${pageContext.request.contextPath}/">Return to main page</a>
 </p>
 </body>
 </html>

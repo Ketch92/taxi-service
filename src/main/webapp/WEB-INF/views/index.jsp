@@ -22,7 +22,7 @@
     <a href="${pageContext.request.contextPath}/car/add">Add car</a>
 </p>
 <p>
-    <a href="${pageContext.request.contextPath}/cars/all">All cars</a>
+    <a href="${pageContext.request.contextPath}/car/all">All cars</a>
 </p>
 <p>
     <a href="${pageContext.request.contextPath}/car/add/driver">Add driver to a car</a>
