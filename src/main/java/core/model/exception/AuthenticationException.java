@@ -1,7 +1,7 @@
 package core.model.exception;
 
 public class AuthenticationException extends Exception {
-    private AuthenticationException(String message) {
+    public AuthenticationException(String message) {
         super(message);
     }
 }
