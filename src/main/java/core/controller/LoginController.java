@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 public class LoginController extends HttpServlet {
     private static final Injector injector
             = Injector.getInstance("core");
+    private static final String DRIVER_ID = "driverId";
     private final AuthenticationDriverService authenticationDriverService
             = (AuthenticationDriverService) injector.getInstance(AuthenticationDriverService.class);
     
@@ -29,7 +30,7 @@ public class LoginController extends HttpServlet {
         String password = req.getParameter("password");
         try {
             Driver driver = authenticationDriverService.login(login, password);
-            req.getSession().setAttribute("driverId", driver.getId());
+            req.getSession().setAttribute(DRIVER_ID, driver.getId());
         } catch (AuthenticationException e) {
             req.setAttribute("errorMessage", e.getMessage());
             req.getRequestDispatcher("/WEB-INF/views/sign_in.jsp").forward(req, resp);

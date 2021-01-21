@@ -13,11 +13,13 @@ import javax.servlet.http.HttpServletResponse;
 public class GetMyCurrentCarsController extends HttpServlet {
     private static final Injector injector
             = Injector.getInstance("core");
+    private static final String DRIVER_ID = "driverId";
     private final CarService carService = (CarService) injector.getInstance(CarService.class);
     
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Long driverId = (Long) req.getSession().getAttribute("driverId");
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        Long driverId = (Long) req.getSession().getAttribute(DRIVER_ID);
         List<Car> cars = carService
                 .getAllByDriver(driverId);
         req.setAttribute("cars", cars);

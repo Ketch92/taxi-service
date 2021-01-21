@@ -88,8 +88,6 @@ public class Driver {
         sb.append("id=").append(id);
         sb.append(", name='").append(name).append('\'');
         sb.append(", licenceNumber='").append(licenceNumber).append('\'');
-        sb.append(", login='").append(login).append('\'');
-        sb.append(", password='").append(password).append('\'');
         sb.append('}');
         return sb.toString();
     }
