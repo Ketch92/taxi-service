@@ -124,4 +124,14 @@
         <url-pattern>/cars/delete</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>loginController</servlet-name>
+        <servlet-class>core.controller.LoginController</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>loginController</servlet-name>
+        <url-pattern>/login</url-pattern>
+    </servlet-mapping>
+
 </web-app>
