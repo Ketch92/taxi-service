@@ -1,5 +1,4 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -28,7 +27,7 @@
     </c:forEach>
 </table>
 <p>
-    <a href=${pageContext.request.contextPath}"/car/all">Return to main page</a>
+    <a href=${pageContext.request.contextPath}"/cars">Return to main page</a>
 </p>
 </body>
 </html>

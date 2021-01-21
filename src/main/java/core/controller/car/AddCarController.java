@@ -2,7 +2,6 @@ package core.controller.car;
 
 import core.lib.Injector;
 import core.model.Car;
-import core.model.Manufacturer;
 import core.service.car.CarService;
 import core.service.manufacturer.ManufacturerService;
 import java.io.IOException;
@@ -28,12 +27,8 @@ public class AddCarController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         String model = req.getParameter("model");
-        String manufacturerName = req.getParameter("manufacturerName");
-        String manufacturerCountry = req.getParameter("manufacturerCountry");
-        Manufacturer manufacturer
-                = manufacturerService.add(new Manufacturer(manufacturerName,
-                manufacturerCountry));
-        carService.add(new Car(model, manufacturer));
+        String manufacturerId = req.getParameter("manufacturerId");
+        carService.add(new Car(model, manufacturerService.get(Long.valueOf(manufacturerId))));
         resp.sendRedirect(req.getContextPath() + "/");
     }
 }

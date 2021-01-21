@@ -6,7 +6,6 @@ import core.model.Driver;
 import core.service.car.CarService;
 import core.service.driver.DriverService;
 import java.io.IOException;
-import java.util.NoSuchElementException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -31,23 +30,14 @@ public class AddDriverToCarController extends HttpServlet {
         String carId = req.getParameter("carId");
         String driverId = req.getParameter("driverId");
         if (carId.isEmpty() || driverId.isEmpty()) {
-            errorInput(req, resp, "Empty input provided");
+            req.setAttribute("errorMessage", "Empty input provided");
+            req.getRequestDispatcher("/WEB-INF/views/car/add_driver_to_car.jsp")
+                    .forward(req, resp);
+            return;
         }
-        try {
-            Driver driver = driverService.get(Long.valueOf(driverId));
-            Car car = carService.get(Long.valueOf(carId));
-            carService.addDriverToCar(driver, car);
-            resp.sendRedirect(req.getContextPath() + "/");
-        } catch (NoSuchElementException e) {
-            errorInput(req, resp, "Such car or drivers isn't registered");
-        }
-        
-    }
-    
-    private void errorInput(HttpServletRequest req, HttpServletResponse resp, String message)
-            throws ServletException, IOException {
-        req.setAttribute("errorMessage", message);
-        req.getRequestDispatcher("/WEB-INF/views/car/add_driver_to_car.jsp")
-                .forward(req, resp);
+        Driver driver = driverService.get(Long.valueOf(driverId));
+        Car car = carService.get(Long.valueOf(carId));
+        carService.addDriverToCar(driver, car);
+        resp.sendRedirect(req.getContextPath() + "/");
     }
 }

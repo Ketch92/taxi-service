@@ -7,25 +7,25 @@
 <h1>Taxi service</h1>
 
 <p>
-    <a href="${pageContext.request.contextPath}/driver/add">Add driver</a>
+    <a href="${pageContext.request.contextPath}/drivers/add">Add driver</a>
 </p>
 <p>
-    <a href="${pageContext.request.contextPath}/driver/all">All drivers</a>
+    <a href="${pageContext.request.contextPath}/drivers">All drivers</a>
 </p>
 <p>
-    <a href="${pageContext.request.contextPath}/manufacturer/add">Add manufacturer</a>
+    <a href="${pageContext.request.contextPath}/manufacturers/add">Add manufacturer</a>
 </p>
 <p>
-    <a href="${pageContext.request.contextPath}/manufacturer/all">All manufacturers</a>
+    <a href="${pageContext.request.contextPath}/manufacturers">All manufacturers</a>
 </p>
 <p>
-    <a href="${pageContext.request.contextPath}/car/add">Add car</a>
+    <a href="${pageContext.request.contextPath}/cars/add">Add car</a>
 </p>
 <p>
-    <a href="${pageContext.request.contextPath}/car/all">All cars</a>
+    <a href="${pageContext.request.contextPath}/cars">All cars</a>
 </p>
 <p>
-    <a href="${pageContext.request.contextPath}/car/add/driver">Add driver to a car</a>
+    <a href="${pageContext.request.contextPath}/cars/drivers/add">Add driver to a car</a>
 </p>
 </body>
 </html>
