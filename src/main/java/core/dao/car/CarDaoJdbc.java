@@ -3,7 +3,7 @@ package core.dao.car;
 import core.dao.DaoUtils;
 import core.lib.Dao;
 import core.model.Car;
-import core.model.DataProcessingException;
+import core.model.exception.DataProcessingException;
 import core.model.Driver;
 import core.model.ErrorMessages;
 import core.model.Manufacturer;

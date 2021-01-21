@@ -2,7 +2,7 @@ package core.dao.driver;
 
 import core.dao.DaoUtils;
 import core.lib.Dao;
-import core.model.DataProcessingException;
+import core.model.exception.DataProcessingException;
 import core.model.Driver;
 import core.model.ErrorMessages;
 import core.utils.ConnectionUtils;
@@ -60,6 +60,29 @@ public class DriverDaoJdbc implements DriverDao {
         } catch (SQLException e) {
             throw new DataProcessingException(String
                     .format(ErrorMessages.GET.getMessage(), Driver.class.getSimpleName(), id), e);
+        }
+    }
+    
+    @Override
+    public Optional<Driver> getByLogin(String login) {
+        String getByLogin = "SELECT id as driver_id, name as driver_name,"
+                            + " licence_number as driver_licence, "
+                            + " login as driver_login, "
+                            + " password as driver_password"
+                            + " FROM drivers"
+                            + " WHERE (login = ? AND deleted = false);";;
+        try (Connection connection = ConnectionUtils.getConnection();
+                PreparedStatement getByLoginStatement = connection.prepareStatement(getByLogin)){
+            getByLoginStatement.setString(1, login);
+            ResultSet resultSet = getByLoginStatement.executeQuery();
+            if(resultSet.next()) {
+                return Optional.of(DaoUtils.parseToDriver(resultSet));
+            }
+            return Optional.empty();
+        } catch (SQLException e) {
+            throw new DataProcessingException(String
+                    .format("Failed to get %s by login %s.",
+                            Driver.class.getSimpleName(), login), e);
         }
     }
     
