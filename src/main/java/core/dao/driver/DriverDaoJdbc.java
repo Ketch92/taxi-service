@@ -19,13 +19,15 @@ import java.util.Optional;
 public class DriverDaoJdbc implements DriverDao {
     @Override
     public Driver add(Driver driver) {
-        String insert = "INSERT INTO drivers(name, licence_number)"
-                        + " VALUES(?, ?);";
+        String insert = "INSERT INTO drivers(name, licence_number, login, password)"
+                        + " VALUES(?, ?, ?, ?);";
         try (Connection con = ConnectionUtils.getConnection();
                 PreparedStatement insertStatement = con.prepareStatement(insert,
                             Statement.RETURN_GENERATED_KEYS)) {
             insertStatement.setString(1, driver.getName());
             insertStatement.setString(2, driver.getLicenceNumber());
+            insertStatement.setString(3, driver.getLogin());
+            insertStatement.setString(4, driver.getPassword());
             insertStatement.executeUpdate();
             ResultSet resultSet = insertStatement.getGeneratedKeys();
             if (resultSet.next()) {
@@ -42,7 +44,9 @@ public class DriverDaoJdbc implements DriverDao {
     @Override
     public Optional<Driver> get(Long id) {
         String select = "SELECT id as driver_id, name as driver_name,"
-                        + " licence_number as driver_licence"
+                        + " licence_number as driver_licence, "
+                        + " login as driver_login, "
+                        + " password as driver_password"
                         + " FROM drivers"
                         + " WHERE (id = ? AND deleted = false);";
         try (Connection connection = ConnectionUtils.getConnection();
@@ -62,7 +66,9 @@ public class DriverDaoJdbc implements DriverDao {
     @Override
     public List<Driver> getAll() {
         String select = "SELECT id as driver_id, name as driver_name,"
-                        + " licence_number as driver_licence"
+                        + " licence_number as driver_licence,"
+                        + " login as driver_login,"
+                        + " password as driver_password"
                         + " FROM drivers"
                         + " WHERE deleted = false;";
         List<Driver> resultList = new ArrayList<>();
@@ -83,12 +89,17 @@ public class DriverDaoJdbc implements DriverDao {
     @Override
     public Driver update(Driver driver) {
         String update = "UPDATE drivers SET name = ?,"
-                        + " licence_number = ? WHERE id = ? AND deleted = false";
+                        + " licence_number = ?,"
+                        + " login = ?,"
+                        + " password = ?"
+                        + " WHERE id = ? AND deleted = false";
         try (Connection con = ConnectionUtils.getConnection();
                  PreparedStatement updateStatement = con.prepareStatement(update)) {
             updateStatement.setString(1, driver.getName());
             updateStatement.setString(2, driver.getLicenceNumber());
-            updateStatement.setLong(3, driver.getId());
+            updateStatement.setString(3, driver.getLogin());
+            updateStatement.setString(4, driver.getPassword());
+            updateStatement.setLong(5, driver.getId());
             updateStatement.executeUpdate();
         } catch (SQLException exception) {
             throw new DataProcessingException(String.format(ErrorMessages.UPDATE.getMessage(),

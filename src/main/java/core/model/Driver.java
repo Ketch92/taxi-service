@@ -14,10 +14,11 @@ public class Driver {
         this.licenceNumber = licenceNumber;
     }
     
-    private Driver(Long id, String name, String licenceNumber) {
-        this.id = id;
+    public Driver(String name, String licenceNumber, String login, String password) {
         this.name = name;
         this.licenceNumber = licenceNumber;
+        this.login = login;
+        this.password = password;
     }
     
     public Long getId() {
@@ -44,19 +45,19 @@ public class Driver {
         this.licenceNumber = licenceNumber;
     }
     
-    private String getLogin() {
+    public String getLogin() {
         return login;
     }
     
-    private void setLogin(String login) {
+    public void setLogin(String login) {
         this.login = login;
     }
     
-    private String getPassword() {
+    public String getPassword() {
         return password;
     }
     
-    private void setPassword(String password) {
+    public void setPassword(String password) {
         this.password = password;
     }
     
