@@ -2,10 +2,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>All drivers</title>
+    <title>Drivers of a car id ${carId}</title>
 </head>
 <body>
-<h1>All drivers</h1>
+<h1>Drivers</h1>
 <table border="1">
     <tr>
         <th>ID</th>
@@ -27,7 +27,7 @@
     </c:forEach>
 </table>
 <p>
-    <a href=${pageContext.request.contextPath}"/cars">Return to main page</a>
+    <a href=${pageContext.request.contextPath}"/cars">Return to cars</a>
 </p>
 </body>
 </html>
