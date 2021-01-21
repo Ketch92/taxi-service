@@ -104,4 +104,14 @@
         <url-pattern>/car/drivers</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>deleteCar</servlet-name>
+        <servlet-class>core.controller.car.DeleteCarController</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>deleteCar</servlet-name>
+        <url-pattern>/car/delete</url-pattern>
+    </servlet-mapping>
+
 </web-app>
