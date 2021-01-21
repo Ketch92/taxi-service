@@ -65,6 +65,16 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>deleteManufacturer</servlet-name>
+        <servlet-class>core.controller.manufacturer.DeleteManufacturerController</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>deleteManufacturer</servlet-name>
+        <url-pattern>/manufacturer/delete</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>addCar</servlet-name>
         <servlet-class>core.controller.car.AddCarController</servlet-class>
     </servlet>
