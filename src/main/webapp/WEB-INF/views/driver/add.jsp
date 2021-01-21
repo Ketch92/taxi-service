@@ -7,8 +7,10 @@
 <h1>Please, fill in the driver info.</h1>
 
 <form method="post" action=${pageContext.request.contextPath}"/drivers/add">
-    Driver's name <input required type="text" name="driverName">
-    Driver's licence number <input required type="text" name="driverLicence">
+    <p>Driver's name <input required type="text" name="name">
+        Driver's licence number <input required type="text" name="licence"></p>
+    Driver's login <input required type="text" name="login">
+    Driver's password <input required type="password" name="password">
     <button type="submit">Send</button>
 </form>
 <p>
