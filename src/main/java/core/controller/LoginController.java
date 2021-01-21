@@ -27,9 +27,9 @@ public class LoginController extends HttpServlet {
             throws ServletException, IOException {
         String login = req.getParameter("login");
         String password = req.getParameter("password");
-    
         try {
             Driver driver = authenticationDriverService.login(login, password);
+            req.getSession().setAttribute("driverId", driver.getId());
         } catch (AuthenticationException e) {
             req.setAttribute("errorMessage", e.getMessage());
             req.getRequestDispatcher("/WEB-INF/views/sign_in.jsp").forward(req, resp);
