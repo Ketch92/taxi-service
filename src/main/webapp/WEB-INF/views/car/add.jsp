@@ -6,8 +6,6 @@
 <body>
 <h1>Please, fill in the car info.</h1>
 
-<h4 style="color: red">${errorMessage}</h4>
-
 <form method="post" action=${pageContext.request.contextPath}"/cars/add">
     Car's model <input required type="text" name="model">
     Manufacturer's id <input required type="text" name="manufacturerId">

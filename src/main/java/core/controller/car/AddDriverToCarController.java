@@ -29,12 +29,6 @@ public class AddDriverToCarController extends HttpServlet {
             throws ServletException, IOException {
         String carId = req.getParameter("carId");
         String driverId = req.getParameter("driverId");
-        if (carId.isEmpty() || driverId.isEmpty()) {
-            req.setAttribute("errorMessage", "Empty input provided");
-            req.getRequestDispatcher("/WEB-INF/views/car/add_driver_to_car.jsp")
-                    .forward(req, resp);
-            return;
-        }
         Driver driver = driverService.get(Long.valueOf(driverId));
         Car car = carService.get(Long.valueOf(carId));
         carService.addDriverToCar(driver, car);
