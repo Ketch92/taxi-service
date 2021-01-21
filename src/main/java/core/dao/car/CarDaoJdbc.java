@@ -47,7 +47,6 @@ public class CarDaoJdbc implements CarDao {
                     .format(ErrorMessages.ADD.getMessage(),
                             Car.class.getSimpleName(), car), e);
         }
-        
         return car;
     }
     
@@ -57,7 +56,9 @@ public class CarDaoJdbc implements CarDao {
                         + " cars.manufacturer as manufacturer_id,"
                         + " m.name as manufacturer_name, m.country as manufacturer_country,"
                         + " d.id as driver_id, d.name as driver_name,"
-                        + " d.licence_number as driver_licence"
+                        + " d.licence_number as driver_licence,"
+                        + " d.login as driver_login,"
+                        + " d.password as driver_password"
                         + " FROM cars"
                         + " LEFT JOIN manufacturers m ON m.id = cars.manufacturer"
                         + " LEFT JOIN cars_drivers cd ON cd.car_id = cars.id"
@@ -89,7 +90,9 @@ public class CarDaoJdbc implements CarDao {
                         + " cars.manufacturer as manufacturer_id,"
                         + " m.name as manufacturer_name, m.country as manufacturer_country,"
                         + " d.id as driver_id, d.name as driver_name,"
-                        + " d.licence_number as driver_licence"
+                        + " d.licence_number as driver_licence,"
+                        + " d.login as driver_login,"
+                        + " d.password as driver_password"
                         + " FROM cars"
                         + " FULL JOIN manufacturers m ON m.id = cars.manufacturer"
                         + " FULL JOIN cars_drivers cd ON cd.car_id = cars.id"
@@ -155,7 +158,9 @@ public class CarDaoJdbc implements CarDao {
                                 + " cars.manufacturer as manufacturer_id,"
                                 + " m.name as manufacturer_name, m.country as manufacturer_country,"
                                 + " d.id as driver_id, d.name as driver_name,"
-                                + " d.licence_number as driver_licence"
+                                + " d.licence_number as driver_licence,"
+                                + " d.login as driver_login,"
+                                + " d.password as driver_password"
                                 + " FROM cars"
                                 + " LEFT JOIN cars_drivers cd ON cd.car_id = cars.id"
                                 + " LEFT JOIN drivers d on cd.driver_id = d.id"
