@@ -33,7 +33,7 @@ public class AuthenticationFilter implements Filter {
     
         String url = req.getServletPath();
         if (url.equals(req.getContextPath() + "/login")
-            || url.equals(req.getContextPath() + "/drivers/add")) {
+                || url.equals(req.getContextPath() + "/drivers/add")) {
             filterChain.doFilter(req, resp);
             return;
         }

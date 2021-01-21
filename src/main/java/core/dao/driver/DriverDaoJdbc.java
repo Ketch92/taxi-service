@@ -2,9 +2,9 @@ package core.dao.driver;
 
 import core.dao.DaoUtils;
 import core.lib.Dao;
-import core.model.exception.DataProcessingException;
 import core.model.Driver;
 import core.model.ErrorMessages;
+import core.model.exception.DataProcessingException;
 import core.utils.ConnectionUtils;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -72,10 +72,10 @@ public class DriverDaoJdbc implements DriverDao {
                             + " FROM drivers"
                             + " WHERE (login = ? AND deleted = false);";;
         try (Connection connection = ConnectionUtils.getConnection();
-                PreparedStatement getByLoginStatement = connection.prepareStatement(getByLogin)){
+                PreparedStatement getByLoginStatement = connection.prepareStatement(getByLogin)) {
             getByLoginStatement.setString(1, login);
             ResultSet resultSet = getByLoginStatement.executeQuery();
-            if(resultSet.next()) {
+            if (resultSet.next()) {
                 return Optional.of(DaoUtils.parseToDriver(resultSet));
             }
             return Optional.empty();

@@ -9,7 +9,6 @@ import core.service.driver.DriverService;
 import core.service.manufacturer.ManufacturerService;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 
 public class Main {
@@ -20,14 +19,10 @@ public class Main {
                 = (ManufacturerService) injector.getInstance(ManufacturerService.class);
         CarService carService = (CarService) injector.getInstance(CarService.class);
         DriverService driverService = (DriverService) injector.getInstance(DriverService.class);
-    
-    
-        Optional<Driver> byLogin = driverService.getByLogin("login 0");
-        byLogin.ifPresent(System.out::println);
-
-//        testDriverService(driverService);
-//        testManufacturerService(manufacturerService);
-//        testCarService(carService, manufacturerService.getAll(), driverService.getAll());
+        
+        testDriverService(driverService);
+        testManufacturerService(manufacturerService);
+        testCarService(carService, manufacturerService.getAll(), driverService.getAll());
     }
 
     private static void testManufacturerService(ManufacturerService manufacturerService) {
