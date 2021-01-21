@@ -10,17 +10,18 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class GetAllCarsController extends HttpServlet {
+public class GetMyCurrentCarsController extends HttpServlet {
     private static final Injector injector
             = Injector.getInstance("core");
     private final CarService carService = (CarService) injector.getInstance(CarService.class);
     
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-        List<Car> cars = carService.getAll();
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Long driverId = (Long) req.getSession().getAttribute("driverId");
+        List<Car> cars = carService
+                .getAllByDriver(driverId);
         req.setAttribute("cars", cars);
-        req.setAttribute("title", "All cars");
+        req.setAttribute("title", "Cars of driver " + driverId);
         req.getRequestDispatcher("/WEB-INF/views/car/get_cars.jsp").forward(req, resp);
     }
 }
