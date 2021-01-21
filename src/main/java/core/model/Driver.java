@@ -6,6 +6,8 @@ public class Driver {
     private Long id;
     private String name;
     private String licenceNumber;
+    private String login;
+    private String password;
     
     public Driver(String name, String licenceNumber) {
         this.name = name;
@@ -42,6 +44,22 @@ public class Driver {
         this.licenceNumber = licenceNumber;
     }
     
+    private String getLogin() {
+        return login;
+    }
+    
+    private void setLogin(String login) {
+        this.login = login;
+    }
+    
+    private String getPassword() {
+        return password;
+    }
+    
+    private void setPassword(String password) {
+        this.password = password;
+    }
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -53,12 +71,14 @@ public class Driver {
         Driver driver = (Driver) o;
         return Objects.equals(id, driver.id)
                && Objects.equals(name, driver.name)
-               && Objects.equals(licenceNumber, driver.licenceNumber);
+               && Objects.equals(licenceNumber, driver.licenceNumber)
+               && Objects.equals(login, driver.login)
+               && Objects.equals(password, driver.password);
     }
     
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, licenceNumber);
+        return Objects.hash(id, name, licenceNumber, login, password);
     }
     
     @Override
@@ -67,6 +87,8 @@ public class Driver {
         sb.append("id=").append(id);
         sb.append(", name='").append(name).append('\'');
         sb.append(", licenceNumber='").append(licenceNumber).append('\'');
+        sb.append(", login='").append(login).append('\'');
+        sb.append(", password='").append(password).append('\'');
         sb.append('}');
         return sb.toString();
     }
