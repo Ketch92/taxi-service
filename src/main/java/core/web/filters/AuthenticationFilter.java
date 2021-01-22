@@ -21,7 +21,6 @@ public class AuthenticationFilter implements Filter {
     
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        throw new RuntimeException("Not supported");
     }
     
     @Override
@@ -35,8 +34,7 @@ public class AuthenticationFilter implements Filter {
         Long driverId = (Long) req.getSession().getAttribute(DRIVER_ID);
         if (url.equals(req.getContextPath() + "/login")
                 || url.equals(req.getContextPath() + "/drivers/add")
-                || (driverId != null
-                && driverService.get(driverId) != null)) {
+                || driverId != null) {
             filterChain.doFilter(req, resp);
             return;
         }
@@ -45,6 +43,5 @@ public class AuthenticationFilter implements Filter {
     
     @Override
     public void destroy() {
-        throw new RuntimeException("Not supported");
     }
 }
