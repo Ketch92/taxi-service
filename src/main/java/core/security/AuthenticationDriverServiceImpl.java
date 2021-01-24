@@ -5,17 +5,18 @@ import core.lib.Inject;
 import core.lib.Service;
 import core.model.Driver;
 import core.model.exception.AuthenticationException;
+import core.service.driver.DriverService;
 
 @Service
 public class AuthenticationDriverServiceImpl implements AuthenticationDriverService {
     
     @Inject
-    private DriverDao dao;
+    private DriverService driverService;
     
     @Override
     public Driver login(String login, String password) throws AuthenticationException {
         String message = "No matches for such login or password.";
-        Driver driver = dao.getByLogin(login)
+        Driver driver = driverService.getByLogin(login)
                 .orElseThrow(() -> new AuthenticationException(message));
         if (password.equals(driver.getPassword())) {
             return driver;
