@@ -1,6 +1,5 @@
 package core.security;
 
-import core.dao.driver.DriverDao;
 import core.lib.Inject;
 import core.lib.Service;
 import core.model.Driver;
