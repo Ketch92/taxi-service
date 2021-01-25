@@ -13,7 +13,9 @@ public class DaoUtils {
         Long id = resultSet.getObject("driver_id", Long.class);
         String name = resultSet.getObject("driver_name", String.class);
         String licence = resultSet.getObject("driver_licence", String.class);
-        Driver driver = new Driver(name, licence);
+        String login = resultSet.getObject("driver_login", String.class);
+        String password = resultSet.getObject("driver_password", String.class);
+        Driver driver = new Driver(name, licence, login, password);
         driver.setId(id);
         return driver;
     }

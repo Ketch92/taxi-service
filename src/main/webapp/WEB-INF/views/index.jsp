@@ -27,5 +27,8 @@
 <p>
     <a href="${pageContext.request.contextPath}/cars/drivers/add">Add driver to a car</a>
 </p>
+<p>
+    <a href="${pageContext.request.contextPath}/drivers/cars">My current cars</a>
+</p>
 </body>
 </html>

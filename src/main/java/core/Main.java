@@ -19,12 +19,12 @@ public class Main {
                 = (ManufacturerService) injector.getInstance(ManufacturerService.class);
         CarService carService = (CarService) injector.getInstance(CarService.class);
         DriverService driverService = (DriverService) injector.getInstance(DriverService.class);
-    
+        
         testDriverService(driverService);
         testManufacturerService(manufacturerService);
         testCarService(carService, manufacturerService.getAll(), driverService.getAll());
     }
-
+    
     private static void testManufacturerService(ManufacturerService manufacturerService) {
         Manufacturer first = new Manufacturer("AMW", "Ukraine");
         Manufacturer second = new Manufacturer("BMW", "Ukraine");

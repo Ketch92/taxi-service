@@ -2,9 +2,9 @@ package core.dao.manufacturer;
 
 import core.dao.DaoUtils;
 import core.lib.Dao;
-import core.model.DataProcessingException;
 import core.model.ErrorMessages;
 import core.model.Manufacturer;
+import core.model.exception.DataProcessingException;
 import core.utils.ConnectionUtils;
 import java.sql.Connection;
 import java.sql.PreparedStatement;

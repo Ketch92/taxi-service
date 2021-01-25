@@ -1,4 +1,4 @@
-package core.model;
+package core.model.exception;
 
 public class DataProcessingException extends RuntimeException {
     public DataProcessingException(String message, Throwable cause) {
